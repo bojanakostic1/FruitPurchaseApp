@@ -4,13 +4,16 @@
  */
 package domen;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  *
  * @author Bojana
  */
-public class Mesto {
+public class Mesto implements OpstiDomenskiObjekat{
     private int idMesto;
     private String naziv;
 
@@ -40,7 +43,7 @@ public class Mesto {
 
     @Override
     public String toString() {
-        return "Mesto{" + "idMesto=" + idMesto + ", naziv=" + naziv + '}';
+        return naziv;
     }
 
     @Override
@@ -65,6 +68,44 @@ public class Mesto {
             return false;
         }
         return Objects.equals(this.naziv, other.naziv);
+    }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "mesto";
+    }
+
+    @Override
+    public List<OpstiDomenskiObjekat> vratiListu(ResultSet rs) throws Exception {
+        List<OpstiDomenskiObjekat> mesta = new ArrayList<>();
+        
+        while(rs.next()){
+            int idMesta = rs.getInt("mesto.idMesto");
+            String nazivMesta = rs.getString("mesto.naziv");
+            Mesto m = new Mesto(idMesta, nazivMesta);
+            mesta.add(m);
+        }
+        return mesta;
+    }
+
+    @Override
+    public String vratiNaziveKolonaZaUbacivanje() {
+        return "naziv";
+    }
+
+    @Override
+    public String vratiVrednostiZaUbacivanje() {
+        return naziv;
+    }
+
+    @Override
+    public String vratiPrimarniKljuc() {
+        return "mesto.idMesto="+idMesto;
+    }
+
+    @Override
+    public String vratiVrednostiZaIzmenu() {
+        return "naziv='"+naziv+"'";
     }
     
 }

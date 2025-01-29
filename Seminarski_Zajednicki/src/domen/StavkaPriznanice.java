@@ -4,13 +4,16 @@
  */
 package domen;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  *
  * @author Bojana
  */
-public class StavkaPriznanice {
+public class StavkaPriznanice implements OpstiDomenskiObjekat{
     private Priznanica priznanica;
     private int rb;
     private String jedinicaMere;
@@ -116,6 +119,55 @@ public class StavkaPriznanice {
         }
         return Objects.equals(this.priznanica, other.priznanica);
     }
-    
+
+    @Override
+    public String vratiNazivTabele() {
+        return "stavka_priznanice";
+    }
+
+    @Override
+    public List<OpstiDomenskiObjekat> vratiListu(ResultSet rs) throws Exception {
+        List<OpstiDomenskiObjekat> lista = new ArrayList<>();
+       
+        while(rs.next()){
+            int idPriznanica = rs.getInt("priznanica");
+            Priznanica priznanica = new Priznanica();
+            priznanica.setIdPriznanica(idPriznanica);
+            
+            int rb = rs.getInt("rb");
+            String jedinicaMere = rs.getString("jedinicaMere");
+            double kolicina = rs.getDouble("kolicina");
+            double cena = rs.getDouble("stavka_priznanice.cena");
+            double vrednost = rs.getDouble("vrednost");
+            
+            int idSorta = rs.getInt("sorta");
+            Sorta sorta = new Sorta();
+            sorta.setIdSorta(idSorta);
+            
+            StavkaPriznanice stavka = new StavkaPriznanice(priznanica, rb, jedinicaMere, kolicina, cena, vrednost, sorta);
+            lista.add(stavka);
+        }    
+        return lista;
+    }
+
+    @Override
+    public String vratiNaziveKolonaZaUbacivanje() {
+        return "priznanica,rb,jedinicaMere,kolicina,cena,vrednost,sorta";
+    }
+
+    @Override
+    public String vratiVrednostiZaUbacivanje() {
+        return priznanica.getIdPriznanica()+","+rb+",'"+jedinicaMere+"',"+kolicina+","+cena+","+vrednost+","+sorta.getIdSorta();
+    }
+
+    @Override
+    public String vratiPrimarniKljuc() {
+        return "stavka_priznanice.priznanica="+priznanica.getIdPriznanica()+" AND "+"stavka_priznanice.rb="+rb;
+    }
+
+    @Override
+    public String vratiVrednostiZaIzmenu() {
+        return "jedinicaMere='"+jedinicaMere+"',kolicina="+kolicina+",cena="+cena+",vrednost="+vrednost+",sorta="+sorta.getIdSorta();
+    }
     
 }

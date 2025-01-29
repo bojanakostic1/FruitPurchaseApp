@@ -4,13 +4,16 @@
  */
 package domen;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  *
  * @author Bojana
  */
-public class VrstaVoca {
+public class VrstaVoca implements OpstiDomenskiObjekat{
     private int idVrstaVoca;
     private String naziv;
 
@@ -63,6 +66,43 @@ public class VrstaVoca {
         final VrstaVoca other = (VrstaVoca) obj;
         return Objects.equals(this.naziv, other.naziv);
     }
+
+    @Override
+    public String vratiNazivTabele() {
+        return "vrsta_voca";
+    }
+
+    @Override
+    public List<OpstiDomenskiObjekat> vratiListu(ResultSet rs) throws Exception {
+        List<OpstiDomenskiObjekat> vrsteVoca = new ArrayList<>();
+        
+        while(rs.next()){
+            int idVrstaVoca = rs.getInt("vrsta_voca.idVrstaVoca");
+            String naziv = rs.getString("vrsta_voca.naziv");
+            VrstaVoca vv = new VrstaVoca(idVrstaVoca, naziv);
+            vrsteVoca.add(vv);
+        }
+        return vrsteVoca;
+    }
+
+    @Override
+    public String vratiNaziveKolonaZaUbacivanje() {
+        return "naziv";
+    }
+
+    @Override
+    public String vratiVrednostiZaUbacivanje() {
+        return "'"+naziv+"'";
+    }
+
+    @Override
+    public String vratiPrimarniKljuc() {
+        return "vrsta_voca.idVrstaVoca="+idVrstaVoca;
+    }
+
+    @Override
+    public String vratiVrednostiZaIzmenu() {
+        return "naziv='"+naziv+"'";
+    }
    
-    
 }

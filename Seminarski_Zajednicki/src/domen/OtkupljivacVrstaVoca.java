@@ -4,14 +4,17 @@
  */
 package domen;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
  *
  * @author Bojana
  */
-public class OtkupljivacVrstaVoca {
+public class OtkupljivacVrstaVoca implements OpstiDomenskiObjekat{
     private Otkupljivac otkupljivac;
     private VrstaVoca vrstaVoca;
     private Date datumOtkupa;
@@ -80,6 +83,52 @@ public class OtkupljivacVrstaVoca {
         }
         return Objects.equals(this.datumOtkupa, other.datumOtkupa);
     }
-    
-    
+
+    @Override
+    public String vratiNazivTabele() {
+        return "otkupljivac_vrsta_voca";
+    }
+
+    @Override
+    public List<OpstiDomenskiObjekat> vratiListu(ResultSet rs) throws Exception {
+        List<OpstiDomenskiObjekat> lista = new ArrayList<>();
+        
+        while(rs.next()){
+            int idOtkupljivac = rs.getInt("otkupljivac.idOtkupljivac");
+            String ime = rs.getString("otkupljivac.ime");
+            String prezime = rs.getString("otkupljivac.prezime");
+            String korisnickoIme = rs.getString("otkupljivac.korisnickoIme");
+            String sifra = rs.getString("otkupljivac.sifra");
+            Otkupljivac o = new Otkupljivac(idOtkupljivac, ime, prezime, korisnickoIme, sifra);
+            
+            int idVrstaVoca = rs.getInt("vrsta_voca.idVrstaVoca");
+            String naziv = rs.getString("vrsta_voca.naziv");
+            VrstaVoca vv = new VrstaVoca(idVrstaVoca, naziv);
+            
+            Date datumOtkupa = rs.getDate("otkupljivac_vrsta_voca.datumOtkupa");
+            OtkupljivacVrstaVoca ovv = new OtkupljivacVrstaVoca(o, vv, datumOtkupa);
+            lista.add(ovv);
+        }
+        return lista;
+    }
+
+    @Override
+    public String vratiNaziveKolonaZaUbacivanje() {
+        return "otkupljivac,vrstaVoca,datumOtkupa";
+    }
+
+    @Override
+    public String vratiVrednostiZaUbacivanje() {
+        return otkupljivac.getIdOtkupljivac()+","+vrstaVoca.getIdVrstaVoca()+",'"+datumOtkupa+"'";
+    }
+
+    @Override
+    public String vratiPrimarniKljuc() {
+        return "otkupljivac_vrsta_voca.otkupljivac="+otkupljivac.getIdOtkupljivac()+" AND "+"otkupljivac_vrsta_voca.vrsta_voca="+vrstaVoca.getIdVrstaVoca()+" AND "+"otkupljivac_vrsta_voca.datumOtkupa='"+datumOtkupa+"'";
+    }
+
+    @Override
+    public String vratiVrednostiZaIzmenu() {
+        return "otkupljivac="+otkupljivac.getIdOtkupljivac()+",vrsta_voca="+vrstaVoca.getIdVrstaVoca()+",datumOtkupa='"+datumOtkupa+"'";
+    }
 }

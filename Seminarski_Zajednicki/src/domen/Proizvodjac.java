@@ -4,13 +4,16 @@
  */
 package domen;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  *
  * @author Bojana
  */
-public class Proizvodjac {
+public class Proizvodjac implements OpstiDomenskiObjekat{
     private int idProizvodjac;
     private String ime;
     private String prezime;
@@ -70,7 +73,7 @@ public class Proizvodjac {
 
     @Override
     public String toString() {
-        return "Proizvodjac{" + "idProizvodjac=" + idProizvodjac + ", ime=" + ime + ", prezime=" + prezime + ", brojTelefona=" + brojTelefona + ", mesto=" + mesto + '}';
+        return "Proizvodjac: ime=" + ime + ", prezime=" + prezime + ", brojTelefona=" + brojTelefona + ", mesto=" + mesto;
     }
 
     @Override
@@ -99,6 +102,48 @@ public class Proizvodjac {
         }
         return Objects.equals(this.prezime, other.prezime);
     }
-    
-    
+
+    @Override
+    public String vratiNazivTabele() {
+        return "proizvodjac";
+    }
+
+    @Override
+    public List<OpstiDomenskiObjekat> vratiListu(ResultSet rs) throws Exception {
+        List<OpstiDomenskiObjekat> proizvodjaci = new ArrayList<>();
+        
+        while(rs.next()){
+            int idProizvodjac = rs.getInt("proizvodjac.idProizvodjac");
+            String ime = rs.getString("proizvodjac.ime");
+            String prezime = rs.getString("proizvodjac.prezime");
+            String brojTelefona  = rs.getString("proizvodjac.brojTelefona");
+            
+            Mesto mesto = new Mesto();
+            mesto.setIdMesto(rs.getInt("mesto.idMesto"));
+            mesto.setNaziv(rs.getString("mesto.naziv"));
+            Proizvodjac p = new Proizvodjac(idProizvodjac, ime, prezime, brojTelefona, mesto);
+            proizvodjaci.add(p);
+        }
+        return proizvodjaci;
+    }
+
+    @Override
+    public String vratiNaziveKolonaZaUbacivanje() {
+        return "ime,prezime,brojTelefona,mesto";
+    }
+
+    @Override
+    public String vratiVrednostiZaUbacivanje() {
+        return "'"+ime+"','"+prezime+"','"+brojTelefona+"',"+mesto;
+    }
+
+    @Override
+    public String vratiPrimarniKljuc() {
+        return "proizvodjac.idProizvodjac="+idProizvodjac;
+    }
+
+    @Override
+    public String vratiVrednostiZaIzmenu() {
+        return "ime='"+ime+"',prezime='"+prezime+"',brojTelefona='"+brojTelefona+"',mesto="+mesto.getIdMesto();
+    }
 }
