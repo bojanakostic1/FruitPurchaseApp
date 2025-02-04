@@ -17,7 +17,8 @@ import niti.ObradaKlijentskihZahteva;
  *
  * @author Bojana
  */
-public class Server {
+public class Server extends Thread {
+
     boolean kraj = false;
     ServerSocket serverSoket;
     List<ObradaKlijentskihZahteva> klijenti;
@@ -25,20 +26,25 @@ public class Server {
     public Server() {
         klijenti = new ArrayList<>();
     }
-    
-    public void pokreniServer() throws IOException {
-         serverSoket = new ServerSocket(9000);
-       
-        while (!kraj) {
-            Socket s = serverSoket.accept();
-            System.out.println("Klijent je povezan!");
-            ObradaKlijentskihZahteva okz = new ObradaKlijentskihZahteva(s);
-            klijenti.add(okz);
-            okz.start();
+
+    @Override
+    public void run() {
+        try {
+            serverSoket = new ServerSocket(9000);
+            
+            while (!kraj) {
+                Socket s = serverSoket.accept();
+                System.out.println("Klijent je povezan!");
+                ObradaKlijentskihZahteva okz = new ObradaKlijentskihZahteva(s);
+                klijenti.add(okz);
+                okz.start();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void zaustaviServer(){
+
+    public void zaustaviServer() {
         kraj = true;
         try {
             for (ObradaKlijentskihZahteva klijent : klijenti) {
@@ -49,6 +55,6 @@ public class Server {
             ex.printStackTrace();
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 }

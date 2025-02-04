@@ -36,7 +36,7 @@
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtURL" pref="241" max="32767" attributes="0"/>
                           <Component id="txtUsername" max="32767" attributes="0"/>
-                          <Component id="Password" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jPassword" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -64,7 +64,7 @@
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="Password" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jPassword" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="62" max="32767" attributes="0"/>
               <Component id="btnSacuvaj" min="-2" max="-2" attributes="0"/>
@@ -93,12 +93,15 @@
         <Property name="text" type="java.lang.String" value="Password:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="Password">
+    <Component class="javax.swing.JPasswordField" name="jPassword">
     </Component>
     <Component class="javax.swing.JButton" name="btnSacuvaj">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sacuvaj"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSacuvajActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -4,6 +4,8 @@
  */
 package forme;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Bojana
@@ -16,6 +18,9 @@ public class FormaKonfiguracijaBaze extends javax.swing.JDialog {
     public FormaKonfiguracijaBaze(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        txtURL.setText(konfiguracija.Konfiguracija.getInstance().getProperty("url"));
+        txtUsername.setText(konfiguracija.Konfiguracija.getInstance().getProperty("username"));
+        jPassword.setText(String.valueOf(konfiguracija.Konfiguracija.getInstance().getProperty("password")));
     }
 
     /**
@@ -32,7 +37,7 @@ public class FormaKonfiguracijaBaze extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        Password = new javax.swing.JPasswordField();
+        jPassword = new javax.swing.JPasswordField();
         btnSacuvaj = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -44,6 +49,11 @@ public class FormaKonfiguracijaBaze extends javax.swing.JDialog {
         jLabel3.setText("Password:");
 
         btnSacuvaj.setText("Sacuvaj");
+        btnSacuvaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSacuvajActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,7 +71,7 @@ public class FormaKonfiguracijaBaze extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtURL, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
                             .addComponent(txtUsername)
-                            .addComponent(Password)))
+                            .addComponent(jPassword)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnSacuvaj)))
@@ -81,7 +91,7 @@ public class FormaKonfiguracijaBaze extends javax.swing.JDialog {
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(btnSacuvaj)
                 .addGap(53, 53, 53))
@@ -90,12 +100,31 @@ public class FormaKonfiguracijaBaze extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
+        String url = txtURL.getText().trim();
+        String username = txtUsername.getText().trim();
+        String password = String.valueOf(jPassword).trim();
+        try {
+            konfiguracija.Konfiguracija.getInstance().setProperty("url", url);
+            konfiguracija.Konfiguracija.getInstance().setProperty("username", username);
+            konfiguracija.Konfiguracija.getInstance().setProperty("password", password);
+
+            konfiguracija.Konfiguracija.getInstance().sacuvajIzmene();
+            JOptionPane.showMessageDialog(this, "Konfiguracioni podaci su uspesno izmenjeni.", "Uspesna izmena", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Greska!Konfiguracioni podaci nisu izmenjeni.", "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnSacuvajActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPasswordField Password;
     private javax.swing.JButton btnSacuvaj;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPasswordField jPassword;
     private javax.swing.JTextField txtURL;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables

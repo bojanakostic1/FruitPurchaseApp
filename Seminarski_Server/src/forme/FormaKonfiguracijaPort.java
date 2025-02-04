@@ -4,11 +4,15 @@
  */
 package forme;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Bojana
  */
 public class FormaKonfiguracijaPort extends javax.swing.JDialog {
+
+    int port;
 
     /**
      * Creates new form FormaKonfiguracijaPort
@@ -16,6 +20,7 @@ public class FormaKonfiguracijaPort extends javax.swing.JDialog {
     public FormaKonfiguracijaPort(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        txtPort.setText(String.valueOf(konfiguracija.Konfiguracija.getInstance().getProperty("port")));
     }
 
     /**
@@ -36,6 +41,11 @@ public class FormaKonfiguracijaPort extends javax.swing.JDialog {
         jLabel1.setText("Port: ");
 
         btnSacuvaj.setText("Sacuvaj");
+        btnSacuvaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSacuvajActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -66,6 +76,24 @@ public class FormaKonfiguracijaPort extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
+        try {
+            port = Integer.parseInt(txtPort.getText().trim());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Neispravan broj porta!", "Pogresan unos", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (port >= 0 && port < 65535) {
+            konfiguracija.Konfiguracija.getInstance().setProperty("port", port + "");
+            konfiguracija.Konfiguracija.getInstance().sacuvajIzmene();
+            JOptionPane.showMessageDialog(this, "Uspesno je izmenjen broj porta.", "Uspesno", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Broj porta je izvan dozvoljenog opsega!", "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnSacuvajActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSacuvaj;
