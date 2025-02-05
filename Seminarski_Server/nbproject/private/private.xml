@@ -4,11 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/konfiguracija/Konfiguracija.java</file>
-            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/forme/FormaKonfiguracijaPort.java</file>
-            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/forme/ServerskaForma.java</file>
-            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/forme/FormaKonfiguracijaBaze.java</file>
-            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/main/Main.java</file>
-            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/server/Server.java</file>
+            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/repository/db/impl/DbRepositoryGeneric.java</file>
+            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/controller/Controller.java</file>
+            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/repository/Repository.java</file>
+            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/repository/db/DbConnectionFactory.java</file>
+            <file>file:/C:/Users/Bojana/Desktop/Bojana%20FON/SEDMI%20SEMESTAR/PROJ_SOFT/Seminarski/Seminarski_Server/src/repository/db/DbRepository.java</file>
         </group>
     </open-files>
 </project-private>
