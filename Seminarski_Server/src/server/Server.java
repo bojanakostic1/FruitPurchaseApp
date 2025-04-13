@@ -31,8 +31,10 @@ public class Server extends Thread {
     public void run() {
         try {
             serverSoket = new ServerSocket(9000);
-            
+            System.out.println("Server je pokrenut na portu "+serverSoket.getLocalPort()+".");
+           
             while (!kraj) {
+                System.out.println("Čekam klijente...");
                 Socket s = serverSoket.accept();
                 System.out.println("Klijent je povezan!");
                 ObradaKlijentskihZahteva okz = new ObradaKlijentskihZahteva(s);
@@ -50,11 +52,19 @@ public class Server extends Thread {
             for (ObradaKlijentskihZahteva klijent : klijenti) {
                 klijent.prekiniNit();
             }
-            serverSoket.close();
+            if (serverSoket != null && !serverSoket.isClosed()) {
+                serverSoket.close();
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
+    public ServerSocket getServerSoket() {
+        return serverSoket;
+    }
+    
+    
 }

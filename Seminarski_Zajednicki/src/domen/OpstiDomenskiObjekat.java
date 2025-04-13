@@ -4,6 +4,7 @@
  */
 package domen;
 
+import java.io.Serializable;
 import java.util.List;
 import java.sql.ResultSet;
 
@@ -11,7 +12,7 @@ import java.sql.ResultSet;
  *
  * @author Bojana
  */
-public interface OpstiDomenskiObjekat {
+public interface OpstiDomenskiObjekat extends Serializable{
     public String vratiNazivTabele();
     public String vratiNaziveKolonaZaUbacivanje();
     public String vratiVrednostiZaUbacivanje();

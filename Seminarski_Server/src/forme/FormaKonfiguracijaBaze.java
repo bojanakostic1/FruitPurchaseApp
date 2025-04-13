@@ -103,7 +103,7 @@ public class FormaKonfiguracijaBaze extends javax.swing.JDialog {
     private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
         String url = txtURL.getText().trim();
         String username = txtUsername.getText().trim();
-        String password = String.valueOf(jPassword).trim();
+        String password = String.valueOf(jPassword.getPassword()).trim();
         try {
             konfiguracija.Konfiguracija.getInstance().setProperty("url", url);
             konfiguracija.Konfiguracija.getInstance().setProperty("username", username);

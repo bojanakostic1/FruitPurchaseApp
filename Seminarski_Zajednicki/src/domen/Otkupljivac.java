@@ -73,7 +73,7 @@ public class Otkupljivac implements OpstiDomenskiObjekat{
 
     @Override
     public String toString() {
-        return "Otkupljivac: " +  "ime=" + ime + ", prezime=" + prezime;
+        return "Otkupljivac: " +  "ime=" + ime + ", prezime=" + prezime+"korisnicko ime:"+korisnickoIme+" sifra:"+sifra;
     }
 
     @Override
@@ -94,13 +94,10 @@ public class Otkupljivac implements OpstiDomenskiObjekat{
             return false;
         }
         final Otkupljivac other = (Otkupljivac) obj;
-        if (!Objects.equals(this.ime, other.ime)) {
+        if (!Objects.equals(this.korisnickoIme, other.korisnickoIme)) {
             return false;
         }
-        if (!Objects.equals(this.prezime, other.prezime)) {
-            return false;
-        }
-        return Objects.equals(this.korisnickoIme, other.korisnickoIme);
+        return Objects.equals(this.sifra, other.sifra);
     }
 
     @Override

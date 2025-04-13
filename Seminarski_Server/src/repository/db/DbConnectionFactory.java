@@ -24,10 +24,10 @@ public class DbConnectionFactory {
         try {
             if (connection == null || connection.isClosed()) {
                 String url = Konfiguracija.getInstance().getProperty("url");
-                String user = Konfiguracija.getInstance().getProperty("user");
+                String username = Konfiguracija.getInstance().getProperty("username");
                 String password = Konfiguracija.getInstance().getProperty("password");
 
-                connection = DriverManager.getConnection(url, user, password);
+                connection = DriverManager.getConnection(url, username, password);
                 connection.setAutoCommit(false);
             }
         } catch (SQLException ex) {

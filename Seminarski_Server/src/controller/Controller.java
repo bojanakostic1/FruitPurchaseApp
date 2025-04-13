@@ -4,6 +4,9 @@
  */
 package controller;
 
+import domen.Otkupljivac;
+import operacije.login.PrijaviSO;
+
 /**
  *
  * @author Bojana
@@ -21,5 +24,14 @@ public class Controller {
         }
         return instance;
     }
+
+    public Otkupljivac login(Otkupljivac o) throws Exception {
+        PrijaviSO prijaviSO = new PrijaviSO();
+        prijaviSO.izvrsi(o, null);
+        System.out.println("Klasa Controller: "+prijaviSO.getOtkupljivac());
+        return prijaviSO.getOtkupljivac();
+    }
+
+    
 
 }

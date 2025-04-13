@@ -4,6 +4,8 @@
  */
 package niti;
 
+import controller.Controller;
+import domen.Otkupljivac;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -23,7 +25,7 @@ public class ObradaKlijentskihZahteva extends Thread {
     Primalac primalac;
     Posiljalac posiljalac;
     boolean kraj = false;
-    
+
     public ObradaKlijentskihZahteva(Socket socket) {
         this.soket = socket;
         primalac = new Primalac(socket);
@@ -33,20 +35,34 @@ public class ObradaKlijentskihZahteva extends Thread {
     @Override
     public void run() {
         while (!kraj) {
-            Zahtev zahtev = (Zahtev) primalac.primi();
-            Odgovor odgovor = new Odgovor();
-            switch (zahtev.getOperacija()) {
-                case LOGIN:
+            try {
+                Zahtev zahtev = (Zahtev) primalac.primi();
+              
+                if (zahtev == null) {
+                    System.out.println("Klijent je prekinuo vezu.");
+                    break; // Prekida nit ako klijent zatvori konekciju
+                }
+                Odgovor odgovor = new Odgovor();
 
-                    break;
-                default:
-                    System.out.println("Greska!Operacija ne postoji!");
+                switch (zahtev.getOperacija()) {
+                    case LOGIN:
+                        Otkupljivac o = (Otkupljivac) zahtev.getParametar();
+                        Otkupljivac otkupljivac = Controller.getInstance().login(o);
+                        odgovor.setOdgovor(otkupljivac);
+                        break;
+
+                    default:
+                        System.out.println("Greska!Operacija ne postoji!");
+                }
+                posiljalac.posalji(odgovor);
+            } catch (Exception ex) {
+                System.out.println("Greška u obradi klijentskog zahteva: " + ex.getMessage());
+                Logger.getLogger(ObradaKlijentskihZahteva.class.getName()).log(Level.SEVERE, null, ex);
             }
-            posiljalac.posalji(odgovor);
         }
     }
 
-    public void prekiniNit(){
+    public void prekiniNit() {
         kraj = true;
         try {
             soket.close();
@@ -54,6 +70,6 @@ public class ObradaKlijentskihZahteva extends Thread {
             ex.printStackTrace();
         }
         interrupt();
-        
+
     }
 }

@@ -7,6 +7,7 @@ package forme;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import server.Server;
 
 /**
@@ -15,14 +16,13 @@ import server.Server;
  */
 public class ServerskaForma extends javax.swing.JFrame {
 
-    Server server;
+    private Server server;
 
     /**
      * Creates new form ServerskaForma
      */
     public ServerskaForma() {
         initComponents();
-        server = new Server();
         lblStatus.setText("");
         btnZaustaviServer.setEnabled(false);
     }
@@ -130,17 +130,27 @@ public class ServerskaForma extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemPortActionPerformed
 
     private void btnPokreniServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPokreniServerActionPerformed
-        server.start();
-        lblStatus.setText("Server je pokrenut!");
-        btnZaustaviServer.setEnabled(true);
-        btnPokreniServer.setEnabled(false);
+        if (server == null || !server.isAlive()) {
+            server = new Server();
+            server.start();
+            lblStatus.setText("Server je pokrenut!");
+            btnZaustaviServer.setEnabled(true);
+            btnPokreniServer.setEnabled(false);
+        }
     }//GEN-LAST:event_btnPokreniServerActionPerformed
 
     private void btnZaustaviServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZaustaviServerActionPerformed
-        server.zaustaviServer();
-        lblStatus.setText("Server je zaustavljen!");
-        btnPokreniServer.setEnabled(true);
-        btnZaustaviServer.setEnabled(false);
+        if (server != null && server.getServerSoket().isBound()) {
+            try {
+                server.zaustaviServer();
+                server.getServerSoket().close();
+                lblStatus.setText("Server je zaustavljen!");
+                btnPokreniServer.setEnabled(true);
+                btnZaustaviServer.setEnabled(false);
+            } catch (IOException ex) {
+                Logger.getLogger(ServerskaForma.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnZaustaviServerActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
