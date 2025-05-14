@@ -5,9 +5,12 @@
 package niti;
 
 import controller.Controller;
+import domen.Mesto;
 import domen.Otkupljivac;
+import domen.Proizvodjac;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import komunikacija.Odgovor;
@@ -37,7 +40,7 @@ public class ObradaKlijentskihZahteva extends Thread {
         while (!kraj) {
             try {
                 Zahtev zahtev = (Zahtev) primalac.primi();
-              
+
                 if (zahtev == null) {
                     System.out.println("Klijent je prekinuo vezu.");
                     break; // Prekida nit ako klijent zatvori konekciju
@@ -50,7 +53,32 @@ public class ObradaKlijentskihZahteva extends Thread {
                         Otkupljivac otkupljivac = Controller.getInstance().login(o);
                         odgovor.setOdgovor(otkupljivac);
                         break;
-
+                    case UCITAJ_PROIZVODJACE:
+                        List<Proizvodjac> proizvodjaci = Controller.getInstance().ucitajProizvodjace();
+                        odgovor.setOdgovor(proizvodjaci);
+                        break;
+                    case OBRISI_PROIZVODJACA:
+                        try {
+                            Proizvodjac proizvodjac = (Proizvodjac) zahtev.getParametar();
+                            Controller.getInstance().obrisiProizvodjaca(proizvodjac);
+                            odgovor.setOdgovor(null);
+                        } catch (Exception e) {
+                            odgovor.setOdgovor(e);
+                        }
+                        break;
+                    case UCITAJ_MESTA:
+                        List<Mesto> mesta = Controller.getInstance().ucitajMesta();
+                        odgovor.setOdgovor(mesta);
+                        break;
+                    case DODAJ_PROIZVODJACA:
+                        Proizvodjac proizvodjac = (Proizvodjac) zahtev.getParametar();
+                        Controller.getInstance().dodajProizvodjaca(proizvodjac);
+                        odgovor.setOdgovor(null);
+                        break;
+                    case AZURIRAJ_PROIZVODJACA:
+                        Proizvodjac p = (Proizvodjac) zahtev.getParametar();
+                        Controller.getInstance().azurirajProizvodjaca(p);
+                        odgovor.setOdgovor(null);
                     default:
                         System.out.println("Greska!Operacija ne postoji!");
                 }

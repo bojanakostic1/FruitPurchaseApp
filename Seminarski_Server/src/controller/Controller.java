@@ -4,8 +4,16 @@
  */
 package controller;
 
+import domen.Mesto;
 import domen.Otkupljivac;
+import domen.Proizvodjac;
+import java.util.List;
 import operacije.login.PrijaviSO;
+import operacije.proizvodjaci.ObrisiProizvodjacaSO;
+import operacije.mesta.UcitajMestaSO;
+import operacije.proizvodjaci.KreirajProizvodjacaSO;
+import operacije.proizvodjaci.PromeniProizvodjacaSO;
+import operacije.proizvodjaci.UcitajProizvodjaceSO;
 
 /**
  *
@@ -30,6 +38,35 @@ public class Controller {
         prijaviSO.izvrsi(o, null);
         System.out.println("Klasa Controller: "+prijaviSO.getOtkupljivac());
         return prijaviSO.getOtkupljivac();
+    }
+
+    public List<Proizvodjac> ucitajProizvodjace() throws Exception {
+        UcitajProizvodjaceSO ucitajProizvodjaceSO = new UcitajProizvodjaceSO();
+        ucitajProizvodjaceSO.izvrsi(null, null);
+        System.out.println("Klasa Controller: "+ucitajProizvodjaceSO.getSviProizvodjaci());
+        return ucitajProizvodjaceSO.getSviProizvodjaci();
+    }
+
+    public void obrisiProizvodjaca(Proizvodjac proizvodjac) throws Exception {
+        ObrisiProizvodjacaSO obrisiProizvodjacaSO = new ObrisiProizvodjacaSO();
+        obrisiProizvodjacaSO.izvrsi(proizvodjac, null);
+    }
+
+    public List<Mesto> ucitajMesta() throws Exception {
+        UcitajMestaSO ucitajMestaSO = new UcitajMestaSO();
+        ucitajMestaSO.izvrsi(null, null);
+        System.out.println("Klasa Controller: "+ucitajMestaSO.getSvaMesta());
+        return ucitajMestaSO.getSvaMesta();
+    }
+
+    public void dodajProizvodjaca(Proizvodjac proizvodjac) throws Exception {
+        KreirajProizvodjacaSO kreirajProizvodjacaSO = new KreirajProizvodjacaSO();
+        kreirajProizvodjacaSO.izvrsi(proizvodjac, null);
+    }
+
+    public void azurirajProizvodjaca(Proizvodjac p) throws Exception {
+        PromeniProizvodjacaSO promeniProizvodjacaSO = new PromeniProizvodjacaSO();
+        promeniProizvodjacaSO.izvrsi(p, null);
     }
 
     

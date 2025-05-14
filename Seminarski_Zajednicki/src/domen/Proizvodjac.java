@@ -134,7 +134,7 @@ public class Proizvodjac implements OpstiDomenskiObjekat{
 
     @Override
     public String vratiVrednostiZaUbacivanje() {
-        return "'"+ime+"','"+prezime+"','"+brojTelefona+"',"+mesto;
+        return "'"+ime+"','"+prezime+"','"+brojTelefona+"',"+mesto.getIdMesto();
     }
 
     @Override

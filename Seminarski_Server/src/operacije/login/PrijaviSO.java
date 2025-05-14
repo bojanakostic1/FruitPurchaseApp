@@ -28,7 +28,9 @@ public class PrijaviSO extends ApstraktnaGenerickaOperacija {
 
     @Override
     protected void preduslovi(Object objekat) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(objekat == null || !(objekat instanceof Otkupljivac)){
+            throw  new Exception("Korisničko ime i šifra nisu ispravni.");
+        }
     }
 
     @Override

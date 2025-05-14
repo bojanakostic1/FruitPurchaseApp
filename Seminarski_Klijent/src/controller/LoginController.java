@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
+import kontroler.GlavniKontroler;
 
 /**
  *
@@ -40,9 +41,11 @@ public class LoginController {
                 if (ulogovaniOtkupljivac == null) {
                     JOptionPane.showMessageDialog(lf, "Neuspešno logovanje na sistem!", "Neuspešno logovanje", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    ////////otvoriti glavnu formu za rad sa aplikacijom
+                    GlavniKontroler.getInstance().setUlogovani(ulogovaniOtkupljivac);
                     JOptionPane.showMessageDialog(lf, "Uspešno ste se ulogovali na sistem!", "Uspešno logovanje", JOptionPane.INFORMATION_MESSAGE);
+                    GlavniKontroler.getInstance().otvoriGlavnuFormu();
                     lf.dispose();
+                    
                 }
             }
         });
