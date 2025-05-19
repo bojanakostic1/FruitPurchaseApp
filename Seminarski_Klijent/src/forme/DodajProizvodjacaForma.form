@@ -31,26 +31,29 @@
                   <Component id="lblIme" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
                   <Component id="lblTelefon" min="-2" pref="93" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
-                  <Component id="jLabel1" alignment="0" min="-2" pref="74" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="txtPrezimeProizvodjaca" max="32767" attributes="0"/>
-                      <Component id="txtImeProizvodjaca" max="32767" attributes="0"/>
-                      <Component id="txtId" alignment="0" min="-2" pref="206" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Component id="btnOtkazi" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" pref="74" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="txtTelefonProizvodjaca" alignment="0" min="-2" pref="206" max="-2" attributes="0"/>
-                  <Component id="cmbMesta" alignment="0" min="-2" pref="206" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="txtPrezimeProizvodjaca" max="32767" attributes="0"/>
+                          <Component id="txtImeProizvodjaca" max="32767" attributes="0"/>
+                          <Component id="txtId" alignment="0" min="-2" pref="206" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="txtTelefonProizvodjaca" alignment="0" min="-2" pref="206" max="-2" attributes="0"/>
+                      <Component id="cmbMesta" alignment="0" min="-2" pref="206" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="btnAzuriraj" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                      <Component id="btnDodaj" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="187" max="-2" attributes="0"/>
-              <Component id="btnAzuriraj" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-              <Component id="btnDodaj" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="53" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -86,6 +89,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnDodaj" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAzuriraj" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnOtkazi" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
           </Group>
@@ -131,7 +135,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnAzuriraj">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Azuriraj"/>
+        <Property name="text" type="java.lang.String" value="A&#x17e;uriraj"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -140,6 +144,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtId">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnOtkazi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Otka&#x17e;i"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

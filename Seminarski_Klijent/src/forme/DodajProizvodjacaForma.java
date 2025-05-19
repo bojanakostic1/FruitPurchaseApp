@@ -96,6 +96,7 @@ public class DodajProizvodjacaForma extends javax.swing.JFrame {
         btnAzuriraj = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
+        btnOtkazi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dodavanje novog proizvođača");
@@ -110,9 +111,11 @@ public class DodajProizvodjacaForma extends javax.swing.JFrame {
 
         btnDodaj.setText("Dodaj");
 
-        btnAzuriraj.setText("Azuriraj");
+        btnAzuriraj.setText("Ažuriraj");
 
         jLabel2.setText("ID:");
+
+        btnOtkazi.setText("Otkaži");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,22 +128,23 @@ public class DodajProizvodjacaForma extends javax.swing.JFrame {
                     .addComponent(lblIme, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnOtkazi)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtPrezimeProizvodjaca)
-                        .addComponent(txtImeProizvodjaca)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtTelefonProizvodjaca, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbMesta, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtPrezimeProizvodjaca)
+                            .addComponent(txtImeProizvodjaca)
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtTelefonProizvodjaca, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbMesta, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnAzuriraj)
+                        .addGap(54, 54, 54)
+                        .addComponent(btnDodaj)))
                 .addGap(23, 23, 23))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(187, 187, 187)
-                .addComponent(btnAzuriraj)
-                .addGap(21, 21, 21)
-                .addComponent(btnDodaj)
-                .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,7 +172,8 @@ public class DodajProizvodjacaForma extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDodaj)
-                    .addComponent(btnAzuriraj))
+                    .addComponent(btnAzuriraj)
+                    .addComponent(btnOtkazi))
                 .addGap(28, 28, 28))
         );
 
@@ -178,6 +183,7 @@ public class DodajProizvodjacaForma extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAzuriraj;
     private javax.swing.JButton btnDodaj;
+    private javax.swing.JButton btnOtkazi;
     private javax.swing.JComboBox cmbMesta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -196,5 +202,9 @@ public class DodajProizvodjacaForma extends javax.swing.JFrame {
     
     public void izmeniAddActionListener(ActionListener actionListener){
         btnAzuriraj.addActionListener(actionListener);
+    }
+    
+    public void otkaziAddActionListener(ActionListener actionListener){
+        btnOtkazi.addActionListener(actionListener);
     }
 }

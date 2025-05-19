@@ -35,7 +35,7 @@ public class PromeniProizvodjacaSO extends ApstraktnaGenerickaOperacija {
 
     @Override
     protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
-        broker.edit(objekat);
+        broker.edit((Proizvodjac)objekat);
     }
 
 }

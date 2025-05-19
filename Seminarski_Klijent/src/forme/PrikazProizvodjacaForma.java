@@ -84,6 +84,7 @@ public class PrikazProizvodjacaForma extends javax.swing.JFrame {
         cmbMesto = new javax.swing.JComboBox();
         btnPretrazi = new javax.swing.JButton();
         btnResetujPretragu = new javax.swing.JButton();
+        btnDetalji = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Evidencija proizvođača");
@@ -119,6 +120,8 @@ public class PrikazProizvodjacaForma extends javax.swing.JFrame {
 
         btnResetujPretragu.setText("Resetuj pretragu");
 
+        btnDetalji.setText("Detalji");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -145,14 +148,15 @@ public class PrikazProizvodjacaForma extends javax.swing.JFrame {
                                 .addGap(247, 247, 247)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnObrisi)
-                                    .addComponent(btnAzuriraj)))
+                                    .addComponent(btnAzuriraj)
+                                    .addComponent(btnDetalji)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(70, 70, 70)
                                 .addComponent(btnPretrazi)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnResetujPretragu))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,7 +183,9 @@ public class PrikazProizvodjacaForma extends javax.swing.JFrame {
                         .addGap(52, 52, 52)
                         .addComponent(btnObrisi)
                         .addGap(18, 18, 18)
-                        .addComponent(btnAzuriraj)))
+                        .addComponent(btnAzuriraj)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDetalji)))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
@@ -188,6 +194,7 @@ public class PrikazProizvodjacaForma extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAzuriraj;
+    private javax.swing.JButton btnDetalji;
     private javax.swing.JButton btnObrisi;
     private javax.swing.JButton btnPretrazi;
     private javax.swing.JButton btnResetujPretragu;
@@ -216,4 +223,9 @@ public class PrikazProizvodjacaForma extends javax.swing.JFrame {
     public void addBtnResetujPretraguActionListener(ActionListener actionListener){
         btnResetujPretragu.addActionListener(actionListener);
     }
+    
+    public void addBtnDetaljiActionListener(ActionListener actionListener){
+        btnDetalji.addActionListener(actionListener);
+    }
+    
 }

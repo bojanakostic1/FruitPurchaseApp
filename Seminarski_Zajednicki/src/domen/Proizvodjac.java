@@ -73,7 +73,7 @@ public class Proizvodjac implements OpstiDomenskiObjekat{
 
     @Override
     public String toString() {
-        return "Proizvodjac: ime=" + ime + ", prezime=" + prezime + ", brojTelefona=" + brojTelefona + ", mesto=" + mesto;
+        return "Proizvođač: " + ime + " " + prezime + ", "+mesto + ", br.tel: "+brojTelefona;
     }
 
     @Override

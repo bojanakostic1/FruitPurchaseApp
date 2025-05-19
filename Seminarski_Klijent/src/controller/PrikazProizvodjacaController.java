@@ -40,6 +40,10 @@ public class PrikazProizvodjacaController {
         List<Proizvodjac> proizvodjaci = komunikacija.Komunikacija.getInstance().ucitajProizvodjace();
         ModelTabeleProizvodjaci mtp = new ModelTabeleProizvodjaci(proizvodjaci);
         ppf.getTblProizvodjaci().setModel(mtp);
+
+        ppf.getCmbMesto().setSelectedItem(null);
+        ppf.getTxtIme().setText("");
+        ppf.getTxtPrezime().setText("");
     }
 
     private void addActionListener() {
@@ -48,13 +52,14 @@ public class PrikazProizvodjacaController {
             public void actionPerformed(ActionEvent e) {
                 int red = ppf.getTblProizvodjaci().getSelectedRow();
                 if (red == -1) {
-                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da obriše proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
                 } else {
                     ModelTabeleProizvodjaci mtp = (ModelTabeleProizvodjaci) ppf.getTblProizvodjaci().getModel();
                     Proizvodjac p = mtp.getLista().get(red);
+                    JOptionPane.showMessageDialog(ppf, "Sistem je našao proizvođača.\n"+p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         Komunikacija.getInstance().obrisiProizvodjaca(p);
-                        JOptionPane.showMessageDialog(null, "Sistem je obrisao proizvođača.", "Uspešno", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Sistem je obrisao proizvođača.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         pripremiFormu();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(ppf, "Sistem ne može da obriše proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
@@ -69,8 +74,9 @@ public class PrikazProizvodjacaController {
             public void actionPerformed(ActionEvent e) {
                 int red = ppf.getTblProizvodjaci().getSelectedRow();
                 if (red == -1) {
-                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da ažurira proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
                 } else {
+                    JOptionPane.showMessageDialog(ppf, "Sistem je našao proizvođača.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     ModelTabeleProizvodjaci mtp = (ModelTabeleProizvodjaci) ppf.getTblProizvodjaci().getModel();
                     Proizvodjac p = mtp.getLista().get(red);
                     GlavniKontroler.getInstance().dodajParametar("proizvodjac", p);
@@ -88,7 +94,12 @@ public class PrikazProizvodjacaController {
                 Mesto mesto = (Mesto) ppf.getCmbMesto().getSelectedItem();
 
                 ModelTabeleProizvodjaci mtp = (ModelTabeleProizvodjaci) ppf.getTblProizvodjaci().getModel();
-                mtp.pretrazi(ime, prezime, mesto);
+                int brojRezultata = mtp.pretrazi(ime, prezime, mesto);
+                if (brojRezultata == 0) {
+                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe proizvođače po zadatim kriterijumima.", "Greška", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(ppf, "Sistem je našao proizvođače po zadatim kriterijumima.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         });
 
@@ -96,6 +107,21 @@ public class PrikazProizvodjacaController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 pripremiFormu();
+            }
+        });
+
+        ppf.addBtnDetaljiActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int red = ppf.getTblProizvodjaci().getSelectedRow();
+                if (red == -1) {
+                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    ModelTabeleProizvodjaci mtp = (ModelTabeleProizvodjaci) ppf.getTblProizvodjaci().getModel();
+                    Proizvodjac p = mtp.getLista().get(red);
+                    JOptionPane.showMessageDialog(null, "Sistem je našao proizvođača.\n" + p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+
+                }
             }
         });
     }

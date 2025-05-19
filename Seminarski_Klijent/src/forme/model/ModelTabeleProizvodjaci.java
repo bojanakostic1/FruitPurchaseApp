@@ -55,7 +55,7 @@ public class ModelTabeleProizvodjaci extends AbstractTableModel{
         return lista;
     }
 
-    public void pretrazi(String ime, String prezime, Mesto mesto) {
+    public int pretrazi(String ime, String prezime, Mesto mesto) {
         List<Proizvodjac> filtriranaLista = lista.stream()
                 .filter(p-> (ime == null || ime.isEmpty() || p.getIme().toLowerCase().contains(ime.toLowerCase())))
                 .filter (p-> (prezime == null || prezime.isEmpty() || p.getPrezime().toLowerCase().contains(prezime.toLowerCase())))
@@ -64,6 +64,8 @@ public class ModelTabeleProizvodjaci extends AbstractTableModel{
         
         this.lista = filtriranaLista;
         fireTableDataChanged();
+        
+        return filtriranaLista.size();
     }
     
 }
