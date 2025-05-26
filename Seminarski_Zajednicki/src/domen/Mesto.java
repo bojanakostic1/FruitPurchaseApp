@@ -95,7 +95,7 @@ public class Mesto implements OpstiDomenskiObjekat{
 
     @Override
     public String vratiVrednostiZaUbacivanje() {
-        return naziv;
+        return "'"+naziv+"'";
     }
 
     @Override

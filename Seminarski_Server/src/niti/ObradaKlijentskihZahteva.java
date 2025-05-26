@@ -79,6 +79,27 @@ public class ObradaKlijentskihZahteva extends Thread {
                         Proizvodjac p = (Proizvodjac) zahtev.getParametar();
                         Controller.getInstance().azurirajProizvodjaca(p);
                         odgovor.setOdgovor(null);
+                    case OBRISI_MESTO:
+                        try {
+                            Mesto m = (Mesto) zahtev.getParametar();
+                            Controller.getInstance().obrisiMesto(m);
+                            odgovor.setOdgovor(null);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
+                        break;
+                    case DODAJ_MESTO:
+                        Mesto m = (Mesto) zahtev.getParametar();
+                        try{
+                            Controller.getInstance().dodajMesto(m);
+                        }catch(Exception ex){                        
+                            odgovor.setOdgovor(ex);
+                        }
+                        break;
+                    case AZURIRAJ_MESTO:
+                        Mesto mesto = (Mesto) zahtev.getParametar();
+                        Controller.getInstance().azurirajMesto(mesto);
+                        odgovor.setOdgovor(null);
                     default:
                         System.out.println("Greska!Operacija ne postoji!");
                 }

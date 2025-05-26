@@ -4,15 +4,19 @@
  */
 package kontroler;
 
+import controller.DodajMestoController;
 import controller.DodajProizvodjacaController;
 import controller.GlavnaFormaController;
 import controller.LoginController;
+import controller.PrikazMestaController;
 import controller.PrikazProizvodjacaController;
 import domen.Otkupljivac;
+import forme.DodajMestoForma;
 import forme.DodajProizvodjacaForma;
 import forme.FormaMod;
 import forme.GlavnaForma;
 import forme.LoginForma;
+import forme.PrikazMestaForma;
 import forme.PrikazProizvodjacaForma;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +33,8 @@ public class GlavniKontroler {
     private PrikazProizvodjacaController prikazProizvodjacaController;
     private DodajProizvodjacaController dodajProizvodjacaController;
     private Map<String, Object> parametri;
+    private PrikazMestaController prikazMestaController;
+    private DodajMestoController dodajMestoController;
     
     private GlavniKontroler() {
         parametri = new HashMap<>();
@@ -85,6 +91,25 @@ public class GlavniKontroler {
 
     public void osveziPrikazProizvodjacaFormu() {
         prikazProizvodjacaController.osveziFormu();
+    }
+
+    public void otvoriPrikazMestaFormu() {
+        prikazMestaController = new PrikazMestaController(new PrikazMestaForma());
+        prikazMestaController.otvoriFormu();
+    }
+
+    public void otvoriDodajMestoFormu() {
+        dodajMestoController = new DodajMestoController(new DodajMestoForma());
+        dodajMestoController.otvoriFormu(FormaMod.DODAJ);
+    }
+
+    public void otvoriIzmeniMestoFormu() {
+        dodajMestoController = new DodajMestoController(new DodajMestoForma());
+        dodajMestoController.otvoriFormu(FormaMod.IZMENI);
+    }
+
+    public void osveziPrikazMestaFormu() {
+        prikazMestaController.osveziFormu();
     }
     
     

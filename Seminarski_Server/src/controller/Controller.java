@@ -9,6 +9,9 @@ import domen.Otkupljivac;
 import domen.Proizvodjac;
 import java.util.List;
 import operacije.login.PrijaviSO;
+import operacije.mesta.KreirajMestoSO;
+import operacije.mesta.ObrisiMestoSO;
+import operacije.mesta.PromeniMestoSO;
 import operacije.proizvodjaci.ObrisiProizvodjacaSO;
 import operacije.mesta.UcitajMestaSO;
 import operacije.proizvodjaci.KreirajProizvodjacaSO;
@@ -67,6 +70,21 @@ public class Controller {
     public void azurirajProizvodjaca(Proizvodjac p) throws Exception {
         PromeniProizvodjacaSO promeniProizvodjacaSO = new PromeniProizvodjacaSO();
         promeniProizvodjacaSO.izvrsi(p, null);
+    }
+
+    public void obrisiMesto(Mesto m) throws Exception {
+        ObrisiMestoSO obrisiMestoSO = new ObrisiMestoSO();
+        obrisiMestoSO.izvrsi(m, null);
+    }
+
+    public void dodajMesto(Mesto m) throws Exception {
+        KreirajMestoSO kreirajMestoSO = new KreirajMestoSO();
+        kreirajMestoSO.izvrsi(m, null);
+    }
+
+    public void azurirajMesto(Mesto mesto) throws Exception {
+        PromeniMestoSO promeniMestoSO = new PromeniMestoSO();
+        promeniMestoSO.izvrsi(mesto, null);
     }
 
     

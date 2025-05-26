@@ -120,4 +120,47 @@ public class Komunikacija {
         }
     }
 
+    public void obrisiMesto(Mesto m) throws Exception {
+        Zahtev z = new Zahtev(Operacija.OBRISI_MESTO, m);
+        posiljalac.posalji(z);
+
+        Odgovor odg = (Odgovor) primalac.primi();
+        if (odg.getOdgovor() == null) {
+            System.out.println("Uspešno obrisano mesto!");
+        } else {
+            System.out.println("Neuspešno brisanje mesta!");
+            ((Exception) odg.getOdgovor()).printStackTrace();
+            throw new Exception("Greška");
+        }
+    }
+
+    public void dodajMesto(Mesto mesto) throws Exception {
+        Zahtev z = new Zahtev(Operacija.DODAJ_MESTO, mesto);
+        posiljalac.posalji(z);
+
+        Odgovor odg = (Odgovor) primalac.primi();
+        if (odg.getOdgovor() == null) {
+            System.out.println("Mesto je uspesno dodato!");
+        } else {
+            System.out.println("Mesto nije uspešno dodato!");
+            ((Exception) odg.getOdgovor()).printStackTrace();
+            throw new Exception("Greška.");
+        }
+
+    }
+
+    public void azurirajMesto(Mesto mesto) {
+        Zahtev zahtev = new Zahtev(Operacija.AZURIRAJ_MESTO, mesto);
+        posiljalac.posalji(zahtev);
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        
+        if(odgovor.getOdgovor()==null){
+              System.out.println("Sistem je azurirao mesto!");
+              GlavniKontroler.getInstance().osveziPrikazMestaFormu();
+        }else{
+            System.out.println("Sistem nije uspesno azurirao proizvodjaca!");
+        }
+        
+    }
+
 }
