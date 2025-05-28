@@ -7,6 +7,7 @@ package komunikacija;
 import domen.Mesto;
 import domen.Otkupljivac;
 import domen.Proizvodjac;
+import domen.Sorta;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -153,14 +154,66 @@ public class Komunikacija {
         Zahtev zahtev = new Zahtev(Operacija.AZURIRAJ_MESTO, mesto);
         posiljalac.posalji(zahtev);
         Odgovor odgovor = (Odgovor) primalac.primi();
-        
-        if(odgovor.getOdgovor()==null){
-              System.out.println("Sistem je azurirao mesto!");
-              GlavniKontroler.getInstance().osveziPrikazMestaFormu();
-        }else{
+
+        if (odgovor.getOdgovor() == null) {
+            System.out.println("Sistem je azurirao mesto!");
+            GlavniKontroler.getInstance().osveziPrikazMestaFormu();
+        } else {
             System.out.println("Sistem nije uspesno azurirao proizvodjaca!");
         }
+
+    }
+
+    public List<Sorta> ucitajSorte() {
+        List<Sorta> lista = new ArrayList<>();
+        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_SORTE, null);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odg = (Odgovor) primalac.primi();
+        lista = (List<Sorta>) odg.getOdgovor();
+        return lista;
+    }
+
+    public void obrisiSortu(Sorta s) throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.OBRISI_SORTU, s);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        if (odgovor.getOdgovor() == null) {
+            System.out.println("Sistem je obrisao sortu!");
+        } else {
+            System.out.println("Sistem nije obrisao sortu!");
+            ((Exception) odgovor.getOdgovor()).printStackTrace();
+            throw new Exception("Greška");
+        }
+    }
+
+    public void dodajSortu(Sorta sorta) throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.DODAJ_SORTU, sorta);
+        posiljalac.posalji(zahtev);
         
+        Odgovor odg = (Odgovor) primalac.primi();
+        if (odg.getOdgovor() == null) {
+            System.out.println("Sorta je uspesno dodata!");
+        } else {
+            System.out.println("Sorta nije uspešno dodata!");
+            ((Exception) odg.getOdgovor()).printStackTrace();
+            throw new Exception("Greška.");
+        }
+    }
+
+    public void azurirajSortu(Sorta s) {
+       Zahtev z = new Zahtev(Operacija.AZURIRAJ_SORTU, s);
+       posiljalac.posalji(z);
+       
+       Odgovor odg = (Odgovor) primalac.primi();
+       if (odg.getOdgovor() == null) {
+            System.out.println("Sistem je azurirao sortu!");
+            GlavniKontroler.getInstance().osveziPrikazSortiFormu();
+        } else {
+            System.out.println("Sistem nije uspesno azurirao sortu!");
+        }
+                
     }
 
 }

@@ -75,10 +75,20 @@ public class GlavnaForma extends javax.swing.JFrame {
 
         jMenu2.setText("Sorta");
 
-        jMenuItem3.setText("Kreiraj");
+        jMenuItem3.setText("Dodaj");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem3);
 
-        jMenuItem4.setText("Pretraži");
+        jMenuItem4.setText("Prikaz");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
@@ -151,6 +161,14 @@ public class GlavnaForma extends javax.swing.JFrame {
     private void jMenuItemDodajMestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDodajMestoActionPerformed
         GlavniKontroler.getInstance().otvoriDodajMestoFormu();
     }//GEN-LAST:event_jMenuItemDodajMestoActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        GlavniKontroler.getInstance().otvoriPrikazSortiFormu();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        GlavniKontroler.getInstance().otvoriDodajSortuFormu();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     public JLabel getLblUlogovani() {
         return lblUlogovani;

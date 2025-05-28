@@ -8,11 +8,13 @@ import controller.Controller;
 import domen.Mesto;
 import domen.Otkupljivac;
 import domen.Proizvodjac;
+import domen.Sorta;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import komunikacija.Odgovor;
 import komunikacija.Posiljalac;
 import komunikacija.Primalac;
@@ -90,15 +92,41 @@ public class ObradaKlijentskihZahteva extends Thread {
                         break;
                     case DODAJ_MESTO:
                         Mesto m = (Mesto) zahtev.getParametar();
-                        try{
+                        try {
                             Controller.getInstance().dodajMesto(m);
-                        }catch(Exception ex){                        
+                        } catch (Exception ex) {
                             odgovor.setOdgovor(ex);
                         }
                         break;
                     case AZURIRAJ_MESTO:
                         Mesto mesto = (Mesto) zahtev.getParametar();
                         Controller.getInstance().azurirajMesto(mesto);
+                        odgovor.setOdgovor(null);
+                    case UCITAJ_SORTE:
+                        List<Sorta> sorte = Controller.getInstance().ucitajSorte();
+                        odgovor.setOdgovor(sorte);
+                        break;
+                    case OBRISI_SORTU:
+                        try {
+                            Sorta sorta = (Sorta) zahtev.getParametar();
+                            Controller.getInstance().obrisiSortu(sorta);
+                            odgovor.setOdgovor(null);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
+                        break;
+                    case DODAJ_SORTU:
+                        Sorta sorta = (Sorta) zahtev.getParametar();
+                        try {
+                            Controller.getInstance().dodajSortu(sorta);
+                            odgovor.setOdgovor(null);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
+                        break;
+                    case AZURIRAJ_SORTU:
+                        Sorta s = (Sorta) zahtev.getParametar();
+                        Controller.getInstance().azurirajSortu(s);
                         odgovor.setOdgovor(null);
                     default:
                         System.out.println("Greska!Operacija ne postoji!");

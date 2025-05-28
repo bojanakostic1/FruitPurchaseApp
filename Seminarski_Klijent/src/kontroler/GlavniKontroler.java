@@ -6,18 +6,22 @@ package kontroler;
 
 import controller.DodajMestoController;
 import controller.DodajProizvodjacaController;
+import controller.DodajSortuController;
 import controller.GlavnaFormaController;
 import controller.LoginController;
 import controller.PrikazMestaController;
 import controller.PrikazProizvodjacaController;
+import controller.PrikazSortiController;
 import domen.Otkupljivac;
 import forme.DodajMestoForma;
 import forme.DodajProizvodjacaForma;
+import forme.DodajSortuForma;
 import forme.FormaMod;
 import forme.GlavnaForma;
 import forme.LoginForma;
 import forme.PrikazMestaForma;
 import forme.PrikazProizvodjacaForma;
+import forme.PrikazSortiForma;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +39,8 @@ public class GlavniKontroler {
     private Map<String, Object> parametri;
     private PrikazMestaController prikazMestaController;
     private DodajMestoController dodajMestoController;
+    private PrikazSortiController prikazSortiController;
+    private DodajSortuController dodajSortuController;
     
     private GlavniKontroler() {
         parametri = new HashMap<>();
@@ -110,6 +116,25 @@ public class GlavniKontroler {
 
     public void osveziPrikazMestaFormu() {
         prikazMestaController.osveziFormu();
+    }
+
+    public void otvoriPrikazSortiFormu() {
+        prikazSortiController = new PrikazSortiController(new PrikazSortiForma());
+        prikazSortiController.otvoriFormu();
+    }
+
+    public void otvoriDodajSortuFormu() {
+        dodajSortuController = new DodajSortuController(new DodajSortuForma());
+        dodajSortuController.otvoriFormu(FormaMod.DODAJ);
+    }
+
+    public void otvoriAzurirajSortuFormu() {
+        dodajSortuController = new DodajSortuController(new DodajSortuForma());
+        dodajSortuController.otvoriFormu(FormaMod.IZMENI);
+    }
+
+    public void osveziPrikazSortiFormu() {
+        prikazSortiController.osveziFormu();
     }
     
     

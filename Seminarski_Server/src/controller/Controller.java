@@ -7,6 +7,7 @@ package controller;
 import domen.Mesto;
 import domen.Otkupljivac;
 import domen.Proizvodjac;
+import domen.Sorta;
 import java.util.List;
 import operacije.login.PrijaviSO;
 import operacije.mesta.KreirajMestoSO;
@@ -17,6 +18,10 @@ import operacije.mesta.UcitajMestaSO;
 import operacije.proizvodjaci.KreirajProizvodjacaSO;
 import operacije.proizvodjaci.PromeniProizvodjacaSO;
 import operacije.proizvodjaci.UcitajProizvodjaceSO;
+import operacije.sorte.KreirajSortuSO;
+import operacije.sorte.ObrisiSortuSO;
+import operacije.sorte.PromeniSortuSO;
+import operacije.sorte.UcitajSorteSO;
 
 /**
  *
@@ -85,6 +90,27 @@ public class Controller {
     public void azurirajMesto(Mesto mesto) throws Exception {
         PromeniMestoSO promeniMestoSO = new PromeniMestoSO();
         promeniMestoSO.izvrsi(mesto, null);
+    }
+
+    public List<Sorta> ucitajSorte() throws Exception {
+        UcitajSorteSO ucitajSorteSO = new UcitajSorteSO();
+        ucitajSorteSO.izvrsi(null, null);
+        return ucitajSorteSO.getListaSorti();
+    }
+
+    public void obrisiSortu(Sorta sorta) throws Exception {
+        ObrisiSortuSO obrisiSortuSO = new ObrisiSortuSO();
+        obrisiSortuSO.izvrsi(sorta, null);
+    }
+
+    public void dodajSortu(Sorta sorta) throws Exception {
+        KreirajSortuSO kreirajSortuSO = new KreirajSortuSO();
+        kreirajSortuSO.izvrsi(sorta, null);
+    }
+
+    public void azurirajSortu(Sorta s) throws Exception {
+        PromeniSortuSO promeniSortuSO = new PromeniSortuSO();
+        promeniSortuSO.izvrsi(s, null);
     }
 
     
