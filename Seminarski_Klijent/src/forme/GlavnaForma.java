@@ -35,13 +35,15 @@ public class GlavnaForma extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItemDodajMesto = new javax.swing.JMenuItem();
+        jMenuItemPrikazMesto = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItemDodajMesto = new javax.swing.JMenuItem();
-        jMenuItemPrikazMesto = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Evidencija otkupa voća");
@@ -73,6 +75,26 @@ public class GlavnaForma extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu4.setText("Mesto");
+
+        jMenuItemDodajMesto.setText("Dodaj");
+        jMenuItemDodajMesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDodajMestoActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItemDodajMesto);
+
+        jMenuItemPrikazMesto.setText("Prikaz");
+        jMenuItemPrikazMesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPrikazMestoActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItemPrikazMesto);
+
+        jMenuBar1.add(jMenu4);
+
         jMenu2.setText("Sorta");
 
         jMenuItem3.setText("Dodaj");
@@ -94,27 +116,24 @@ public class GlavnaForma extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Vrsta voća");
+
+        jMenuItem5.setText("Dodaj");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem5);
+
+        jMenuItem6.setText("Prikaz");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem6);
+
         jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Mesto");
-
-        jMenuItemDodajMesto.setText("Dodaj");
-        jMenuItemDodajMesto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemDodajMestoActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItemDodajMesto);
-
-        jMenuItemPrikazMesto.setText("Prikaz");
-        jMenuItemPrikazMesto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemPrikazMestoActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItemPrikazMesto);
-
-        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -136,7 +155,7 @@ public class GlavnaForma extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lblUlogovani))
-                .addContainerGap(239, Short.MAX_VALUE))
+                .addContainerGap(240, Short.MAX_VALUE))
         );
 
         pack();
@@ -170,6 +189,14 @@ public class GlavnaForma extends javax.swing.JFrame {
         GlavniKontroler.getInstance().otvoriDodajSortuFormu();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+       GlavniKontroler.getInstance().otvoriPrikazVrstaVocaFormu();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        GlavniKontroler.getInstance().otvoriDodajVrstuVocaForma();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     public JLabel getLblUlogovani() {
         return lblUlogovani;
     }
@@ -189,6 +216,8 @@ public class GlavnaForma extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItemDodajMesto;
     private javax.swing.JMenuItem jMenuItemPrikazMesto;
     private javax.swing.JLabel lblUlogovani;

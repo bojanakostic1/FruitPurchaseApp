@@ -7,21 +7,25 @@ package kontroler;
 import controller.DodajMestoController;
 import controller.DodajProizvodjacaController;
 import controller.DodajSortuController;
+import controller.DodajVrstuVocaController;
 import controller.GlavnaFormaController;
 import controller.LoginController;
 import controller.PrikazMestaController;
 import controller.PrikazProizvodjacaController;
 import controller.PrikazSortiController;
+import controller.PrikazVrstaVocaController;
 import domen.Otkupljivac;
 import forme.DodajMestoForma;
 import forme.DodajProizvodjacaForma;
 import forme.DodajSortuForma;
+import forme.DodajVrstuVocaForma;
 import forme.FormaMod;
 import forme.GlavnaForma;
 import forme.LoginForma;
 import forme.PrikazMestaForma;
 import forme.PrikazProizvodjacaForma;
 import forme.PrikazSortiForma;
+import forme.PrikazVrstaVocaForma;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +45,8 @@ public class GlavniKontroler {
     private DodajMestoController dodajMestoController;
     private PrikazSortiController prikazSortiController;
     private DodajSortuController dodajSortuController;
+    private PrikazVrstaVocaController prikazVrstaVocaController;
+    private DodajVrstuVocaController dodajVrstuVocaController;
     
     private GlavniKontroler() {
         parametri = new HashMap<>();
@@ -135,6 +141,25 @@ public class GlavniKontroler {
 
     public void osveziPrikazSortiFormu() {
         prikazSortiController.osveziFormu();
+    }
+
+    public void otvoriPrikazVrstaVocaFormu() {
+        prikazVrstaVocaController = new PrikazVrstaVocaController(new PrikazVrstaVocaForma());
+        prikazVrstaVocaController.otvoriFormu();
+    }
+
+    public void otvoriDodajVrstuVocaForma() {
+        dodajVrstuVocaController = new DodajVrstuVocaController(new DodajVrstuVocaForma());
+        dodajVrstuVocaController.otvoriFormu(FormaMod.DODAJ);
+    }
+
+    public void otvoriIzmeniVrstuVocaFormu() {
+        dodajVrstuVocaController = new DodajVrstuVocaController(new DodajVrstuVocaForma());
+        dodajVrstuVocaController.otvoriFormu(FormaMod.IZMENI);
+    }
+
+    public void osveziPrikazVrstaVocaFormu() {
+        prikazVrstaVocaController.osveziFormu();
     }
     
     

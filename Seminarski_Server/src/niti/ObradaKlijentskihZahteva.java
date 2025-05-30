@@ -9,12 +9,12 @@ import domen.Mesto;
 import domen.Otkupljivac;
 import domen.Proizvodjac;
 import domen.Sorta;
+import domen.VrstaVoca;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import komunikacija.Odgovor;
 import komunikacija.Posiljalac;
 import komunikacija.Primalac;
@@ -128,6 +128,33 @@ public class ObradaKlijentskihZahteva extends Thread {
                         Sorta s = (Sorta) zahtev.getParametar();
                         Controller.getInstance().azurirajSortu(s);
                         odgovor.setOdgovor(null);
+                    case UCITAJ_VRSTE_VOCA:
+                        List<VrstaVoca> lista = Controller.getInstance().ucitajVrsteVoca();
+                        odgovor.setOdgovor(lista);
+                        break;
+                    case OBRISI_VRSTU_VOCA:
+                        try {
+                            VrstaVoca vrsta = (VrstaVoca) zahtev.getParametar();
+                            Controller.getInstance().obrisiVrstuVoca(vrsta);
+                            odgovor.setOdgovor(null);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
+                        break;
+                    case DODAJ_VRSTU_VOCA:
+                        try {
+                            VrstaVoca vrsta = (VrstaVoca) zahtev.getParametar();
+                            Controller.getInstance().dodajVrstuVoca(vrsta);
+                            odgovor.setOdgovor(null);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
+                        break;
+                    case AZURIRAJ_VRSTU_VOCA:
+                        VrstaVoca vrsta = (VrstaVoca) zahtev.getParametar();
+                        Controller.getInstance().azurirajVrstuVoca(vrsta);
+                        odgovor.setOdgovor(null);
+                        break;
                     default:
                         System.out.println("Greska!Operacija ne postoji!");
                 }

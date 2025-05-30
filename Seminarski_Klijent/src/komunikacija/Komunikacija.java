@@ -8,6 +8,7 @@ import domen.Mesto;
 import domen.Otkupljivac;
 import domen.Proizvodjac;
 import domen.Sorta;
+import domen.VrstaVoca;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -191,7 +192,7 @@ public class Komunikacija {
     public void dodajSortu(Sorta sorta) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.DODAJ_SORTU, sorta);
         posiljalac.posalji(zahtev);
-        
+
         Odgovor odg = (Odgovor) primalac.primi();
         if (odg.getOdgovor() == null) {
             System.out.println("Sorta je uspesno dodata!");
@@ -203,17 +204,69 @@ public class Komunikacija {
     }
 
     public void azurirajSortu(Sorta s) {
-       Zahtev z = new Zahtev(Operacija.AZURIRAJ_SORTU, s);
-       posiljalac.posalji(z);
-       
-       Odgovor odg = (Odgovor) primalac.primi();
-       if (odg.getOdgovor() == null) {
+        Zahtev z = new Zahtev(Operacija.AZURIRAJ_SORTU, s);
+        posiljalac.posalji(z);
+
+        Odgovor odg = (Odgovor) primalac.primi();
+        if (odg.getOdgovor() == null) {
             System.out.println("Sistem je azurirao sortu!");
             GlavniKontroler.getInstance().osveziPrikazSortiFormu();
         } else {
             System.out.println("Sistem nije uspesno azurirao sortu!");
         }
-                
+
+    }
+
+    public List<VrstaVoca> ucitajVrsteVoca() {
+        List<VrstaVoca> lista = new ArrayList<>();
+        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_VRSTE_VOCA, null);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        lista = (List<VrstaVoca>) odgovor.getOdgovor();
+        return lista;
+    }
+
+    public void obrisiVrstuVoca(VrstaVoca vrsta) throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.OBRISI_VRSTU_VOCA, vrsta);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        if (odgovor.getOdgovor() == null) {
+            System.out.println("Sistem je obrisao vrstu voca!");
+        } else {
+            System.out.println("Sistem nije obrisao vrstu voca!");
+            ((Exception) odgovor.getOdgovor()).printStackTrace();
+            throw new Exception("Greška");
+        }
+    }
+
+    public void dodajVrstuVoca(VrstaVoca vrstaVoca) throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.DODAJ_VRSTU_VOCA, vrstaVoca);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        if (odgovor.getOdgovor() == null) {
+            System.out.println("Vrsta voća je uspesno dodata!");
+        } else {
+            System.out.println("Vrsta voća nije uspešno dodata!");
+            ((Exception) odgovor.getOdgovor()).printStackTrace();
+            throw new Exception("Greška.");
+        }
+
+    }
+
+    public void azurirajVrstuVoca(VrstaVoca vrsta) {
+        Zahtev zahtev = new Zahtev(Operacija.AZURIRAJ_VRSTU_VOCA, vrsta);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        if (odgovor.getOdgovor() == null) {
+            System.out.println("Sistem je azurirao vrstu voca!");
+            GlavniKontroler.getInstance().osveziPrikazVrstaVocaFormu();
+        } else {
+            System.out.println("Sistem nije uspesno azurirao vrstu voca!");
+        }
     }
 
 }

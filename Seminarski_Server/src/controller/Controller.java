@@ -8,6 +8,7 @@ import domen.Mesto;
 import domen.Otkupljivac;
 import domen.Proizvodjac;
 import domen.Sorta;
+import domen.VrstaVoca;
 import java.util.List;
 import operacije.login.PrijaviSO;
 import operacije.mesta.KreirajMestoSO;
@@ -22,6 +23,10 @@ import operacije.sorte.KreirajSortuSO;
 import operacije.sorte.ObrisiSortuSO;
 import operacije.sorte.PromeniSortuSO;
 import operacije.sorte.UcitajSorteSO;
+import operacije.vrste_voca.KreirajVrstuVocaSO;
+import operacije.vrste_voca.ObrisiVrstuVocaSO;
+import operacije.vrste_voca.PromeniVrstuVocaSO;
+import operacije.vrste_voca.UcitajVrsteVocaSO;
 
 /**
  *
@@ -111,6 +116,27 @@ public class Controller {
     public void azurirajSortu(Sorta s) throws Exception {
         PromeniSortuSO promeniSortuSO = new PromeniSortuSO();
         promeniSortuSO.izvrsi(s, null);
+    }
+
+    public List<VrstaVoca> ucitajVrsteVoca() throws Exception {
+        UcitajVrsteVocaSO ucitajVrsteVocaSO = new UcitajVrsteVocaSO();
+        ucitajVrsteVocaSO.izvrsi(null, null);
+        return ucitajVrsteVocaSO.getLista();
+    }
+
+    public void obrisiVrstuVoca(VrstaVoca vrsta) throws Exception {
+        ObrisiVrstuVocaSO obrisiVrstuVocaSO = new ObrisiVrstuVocaSO();
+        obrisiVrstuVocaSO.izvrsi(vrsta, null);
+    }
+
+    public void dodajVrstuVoca(VrstaVoca vrsta) throws Exception {
+        KreirajVrstuVocaSO kreirajVrstuVocaSO = new KreirajVrstuVocaSO();
+        kreirajVrstuVocaSO.izvrsi(vrsta, null);
+    }
+
+    public void azurirajVrstuVoca(VrstaVoca vrsta) throws Exception {
+        PromeniVrstuVocaSO promeniVrstuVocaSO = new PromeniVrstuVocaSO();
+        promeniVrstuVocaSO.izvrsi(vrsta, null);
     }
 
     

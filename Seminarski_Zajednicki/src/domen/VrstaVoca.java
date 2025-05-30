@@ -43,7 +43,7 @@ public class VrstaVoca implements OpstiDomenskiObjekat{
 
     @Override
     public String toString() {
-        return "VrstaVoca{" + "idVrstaVoca=" + idVrstaVoca + ", naziv=" + naziv + '}';
+        return "ID: " + idVrstaVoca + "\nNaziv vrste: " + naziv;
     }
 
     @Override
