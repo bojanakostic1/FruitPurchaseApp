@@ -5,17 +5,20 @@
 package kontroler;
 
 import controller.DodajMestoController;
+import controller.DodajOtkupljivacaController;
 import controller.DodajProizvodjacaController;
 import controller.DodajSortuController;
 import controller.DodajVrstuVocaController;
 import controller.GlavnaFormaController;
 import controller.LoginController;
 import controller.PrikazMestaController;
+import controller.PrikazOtkupljivacaController;
 import controller.PrikazProizvodjacaController;
 import controller.PrikazSortiController;
 import controller.PrikazVrstaVocaController;
 import domen.Otkupljivac;
 import forme.DodajMestoForma;
+import forme.DodajOtkupljivacaForma;
 import forme.DodajProizvodjacaForma;
 import forme.DodajSortuForma;
 import forme.DodajVrstuVocaForma;
@@ -23,6 +26,7 @@ import forme.FormaMod;
 import forme.GlavnaForma;
 import forme.LoginForma;
 import forme.PrikazMestaForma;
+import forme.PrikazOtkupljivacaForma;
 import forme.PrikazProizvodjacaForma;
 import forme.PrikazSortiForma;
 import forme.PrikazVrstaVocaForma;
@@ -47,6 +51,8 @@ public class GlavniKontroler {
     private DodajSortuController dodajSortuController;
     private PrikazVrstaVocaController prikazVrstaVocaController;
     private DodajVrstuVocaController dodajVrstuVocaController;
+    private PrikazOtkupljivacaController prikazOtkupljivacaController;
+    private DodajOtkupljivacaController dodajOtkupljivacaController;
     
     private GlavniKontroler() {
         parametri = new HashMap<>();
@@ -161,6 +167,24 @@ public class GlavniKontroler {
     public void osveziPrikazVrstaVocaFormu() {
         prikazVrstaVocaController.osveziFormu();
     }
-    
+
+    public void otvoriPrikazOtkupljivacaFormu() {
+        prikazOtkupljivacaController = new PrikazOtkupljivacaController(new PrikazOtkupljivacaForma());
+        prikazOtkupljivacaController.otvoriFormu();
+    }
+
+    public void otvoriDodajOtkupljivacaFormu() {
+        dodajOtkupljivacaController = new DodajOtkupljivacaController(new DodajOtkupljivacaForma());
+        dodajOtkupljivacaController.otvoriFormu(FormaMod.DODAJ);
+    }
+
+    public void otvoriAzurirajOtkupljivacaFormu() {
+        dodajOtkupljivacaController = new DodajOtkupljivacaController(new DodajOtkupljivacaForma());
+        dodajOtkupljivacaController.otvoriFormu(FormaMod.IZMENI);
+    }
+
+    public void osveziPrikazOtkupljivacaFormu() {
+        prikazOtkupljivacaController.osveziFormu();
+    }
     
 }

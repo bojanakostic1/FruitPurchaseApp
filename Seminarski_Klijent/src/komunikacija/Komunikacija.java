@@ -269,4 +269,56 @@ public class Komunikacija {
         }
     }
 
+    public List<Otkupljivac> ucitajOtkupljivace() {
+        List<Otkupljivac> lista = new ArrayList<>();
+        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_OTKUPLJIVACE, null);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        lista = (List<Otkupljivac>) odgovor.getOdgovor();
+        return lista;
+    }
+
+    public void obrisiOtkupljivaca(Otkupljivac o) throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.OBRISI_OTKUPLJIVACA, o);
+        posiljalac.posalji(zahtev);
+        
+        Odgovor odgovor = (Odgovor) primalac.primi();
+         if (odgovor.getOdgovor() == null) {
+            System.out.println("Sistem je obrisao otkupljivaca!");
+        } else {
+            System.out.println("Sistem nije obrisao otkupljivaca!");
+            ((Exception) odgovor.getOdgovor()).printStackTrace();
+            throw new Exception("Greška");
+        }
+    }
+
+    public void dodajOtkupljivaca(Otkupljivac otkupljivac) throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.DODAJ_OTKUPLJIVACA, otkupljivac);
+        posiljalac.posalji(zahtev);
+        
+        Odgovor odgovor = (Odgovor) primalac.primi();
+         if (odgovor.getOdgovor() == null) {
+            System.out.println("Otkupljivac je uspesno dodat!");
+        } else {
+            System.out.println("Otkupljivac nije uspešno dodat!");
+            ((Exception) odgovor.getOdgovor()).printStackTrace();
+            throw new Exception("Greška.");
+        }
+    }
+
+    public void azurirajOtkupljivaca(Otkupljivac otkupljivac) {
+        Zahtev zahtev = new Zahtev(Operacija.AZURIRAJ_OTKUPLJIVACA, otkupljivac);
+        posiljalac.posalji(zahtev);
+        
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        if (odgovor.getOdgovor() == null) {
+            System.out.println("Sistem je azurirao otkupljivaca!");
+            GlavniKontroler.getInstance().osveziPrikazOtkupljivacaFormu();
+        } else {
+            System.out.println("Sistem nije uspesno azurirao otkupljivaca!");
+        }
+        
+    }
+
 }

@@ -155,6 +155,32 @@ public class ObradaKlijentskihZahteva extends Thread {
                         Controller.getInstance().azurirajVrstuVoca(vrsta);
                         odgovor.setOdgovor(null);
                         break;
+                    case UCITAJ_OTKUPLJIVACE:
+                        List<Otkupljivac> otkupljivaci = Controller.getInstance().ucitajOtkupljivace();
+                        odgovor.setOdgovor(otkupljivaci);
+                        break;
+                    case OBRISI_OTKUPLJIVACA:
+                        try {
+                            Otkupljivac otkupljivac1 = (Otkupljivac) zahtev.getParametar();
+                            Controller.getInstance().obrisiOtkupljivaca(otkupljivac1);
+                            odgovor.setOdgovor(null);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
+                        break;
+                    case DODAJ_OTKUPLJIVACA:
+                        Otkupljivac otkupljivac1 = (Otkupljivac) zahtev.getParametar();
+                         try {
+                            Controller.getInstance().dodajOtkupljivaca(otkupljivac1);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
+                        break;
+                    case AZURIRAJ_OTKUPLJIVACA:
+                        Otkupljivac otkupljivac2 = (Otkupljivac) zahtev.getParametar();
+                        Controller.getInstance().azurirajOtkupljivaca(otkupljivac2);
+                        odgovor.setOdgovor(null);
+                        break;
                     default:
                         System.out.println("Greska!Operacija ne postoji!");
                 }

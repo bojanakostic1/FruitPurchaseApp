@@ -13,7 +13,8 @@ import java.util.Objects;
  *
  * @author Bojana
  */
-public class Otkupljivac implements OpstiDomenskiObjekat{
+public class Otkupljivac implements OpstiDomenskiObjekat {
+
     private int idOtkupljivac;
     private String ime;
     private String prezime;
@@ -73,7 +74,7 @@ public class Otkupljivac implements OpstiDomenskiObjekat{
 
     @Override
     public String toString() {
-        return "Otkupljivac: " +  "ime=" + ime + ", prezime=" + prezime+"korisnicko ime:"+korisnickoIme+" sifra:"+sifra;
+        return "Otkupljivač: " + ime + " " + prezime;
     }
 
     @Override
@@ -108,8 +109,8 @@ public class Otkupljivac implements OpstiDomenskiObjekat{
     @Override
     public List<OpstiDomenskiObjekat> vratiListu(ResultSet rs) throws Exception {
         List<OpstiDomenskiObjekat> otkupljivaci = new ArrayList<>();
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             int idOtkupljivac = rs.getInt("otkupljivac.idOtkupljivac");
             String ime = rs.getString("otkupljivac.ime");
             String prezime = rs.getString("otkupljivac.prezime");
@@ -128,16 +129,17 @@ public class Otkupljivac implements OpstiDomenskiObjekat{
 
     @Override
     public String vratiVrednostiZaUbacivanje() {
-        return "'"+ime+"','"+prezime+"','"+korisnickoIme+"','"+sifra+"'";
+        return "'" + ime + "','" + prezime + "','" + korisnickoIme + "','" + sifra + "'";
     }
 
     @Override
     public String vratiPrimarniKljuc() {
-        return "otkupljivac.idOtkupljivac="+idOtkupljivac;
+        return "otkupljivac.idOtkupljivac=" + idOtkupljivac;
     }
 
     @Override
     public String vratiVrednostiZaIzmenu() {
-        return "ime='"+ime+"',prezime='"+prezime+"',korisnickoIme='"+korisnickoIme+"',sifra='"+sifra+"'";
-    }        
+        return "ime='" + ime + "',prezime='" + prezime + "',korisnickoIme='" + korisnickoIme + "',sifra='" + sifra + "'";
+    }
+
 }

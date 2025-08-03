@@ -16,6 +16,10 @@ import operacije.mesta.ObrisiMestoSO;
 import operacije.mesta.PromeniMestoSO;
 import operacije.proizvodjaci.ObrisiProizvodjacaSO;
 import operacije.mesta.UcitajMestaSO;
+import operacije.otkupljivaci.KreirajOtkupljivacaSO;
+import operacije.otkupljivaci.ObrisiOtkupljivacaSO;
+import operacije.otkupljivaci.PromeniOtkupljivacaSO;
+import operacije.otkupljivaci.UcitajOtkupljivaceSO;
 import operacije.proizvodjaci.KreirajProizvodjacaSO;
 import operacije.proizvodjaci.PromeniProizvodjacaSO;
 import operacije.proizvodjaci.UcitajProizvodjaceSO;
@@ -137,6 +141,27 @@ public class Controller {
     public void azurirajVrstuVoca(VrstaVoca vrsta) throws Exception {
         PromeniVrstuVocaSO promeniVrstuVocaSO = new PromeniVrstuVocaSO();
         promeniVrstuVocaSO.izvrsi(vrsta, null);
+    }
+
+    public List<Otkupljivac> ucitajOtkupljivace() throws Exception {
+        UcitajOtkupljivaceSO ucitajOtkupljivaceSO = new UcitajOtkupljivaceSO();
+        ucitajOtkupljivaceSO.izvrsi(null, null); 
+        return ucitajOtkupljivaceSO.getLista();
+    }
+
+    public void obrisiOtkupljivaca(Otkupljivac otkupljivac1) throws Exception {
+        ObrisiOtkupljivacaSO obrisiOtkupljivacaSO = new ObrisiOtkupljivacaSO();
+        obrisiOtkupljivacaSO.izvrsi(otkupljivac1, null);
+    }
+
+    public void dodajOtkupljivaca(Otkupljivac otkupljivac1) throws Exception {
+        KreirajOtkupljivacaSO kreirajOtkupljivacaSO = new KreirajOtkupljivacaSO();
+        kreirajOtkupljivacaSO.izvrsi(otkupljivac1, null);
+    }
+
+    public void azurirajOtkupljivaca(Otkupljivac otkupljivac2) throws Exception {
+        PromeniOtkupljivacaSO promeniOtkupljivacaSO = new PromeniOtkupljivacaSO();
+        promeniOtkupljivacaSO.izvrsi(otkupljivac2, null);
     }
 
     
