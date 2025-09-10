@@ -31,6 +31,8 @@ public class GlavnaForma extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         lblUlogovani = new javax.swing.JLabel();
+        lblSlika = new javax.swing.JLabel();
+        lblDobrodoslica = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -54,7 +56,16 @@ public class GlavnaForma extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Evidencija otkupa voća");
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel1.setText("Zdravo,");
+
+        lblUlogovani.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+
+        lblSlika.setIcon(new javax.swing.ImageIcon(getClass().getResource("/slike/slika-voce-seminarski.png"))); // NOI18N
+        lblSlika.setPreferredSize(new java.awt.Dimension(200, 200));
+
+        lblDobrodoslica.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        lblDobrodoslica.setText("Dobro došli u aplikaciju za otkup voća!");
 
         jMenu1.setText("Proizvođač");
         jMenu1.addActionListener(new java.awt.event.ActionListener() {
@@ -189,10 +200,17 @@ public class GlavnaForma extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(51, 51, 51)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblUlogovani, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDobrodoslica)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUlogovani, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(118, Short.MAX_VALUE)
+                .addComponent(lblSlika, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,7 +219,11 @@ public class GlavnaForma extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lblUlogovani))
-                .addContainerGap(240, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lblDobrodoslica)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblSlika, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -288,6 +310,8 @@ public class GlavnaForma extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuItem jMenuItemDodajMesto;
     private javax.swing.JMenuItem jMenuItemPrikazMesto;
+    private javax.swing.JLabel lblDobrodoslica;
+    private javax.swing.JLabel lblSlika;
     private javax.swing.JLabel lblUlogovani;
     // End of variables declaration//GEN-END:variables
 }
