@@ -73,7 +73,7 @@ public class Proizvodjac implements OpstiDomenskiObjekat{
 
     @Override
     public String toString() {
-        return "Proizvođač: " + ime + " " + prezime + ", "+mesto + ", br.tel: "+brojTelefona;
+        return  ime + " " + prezime;
     }
 
     @Override
@@ -145,5 +145,10 @@ public class Proizvodjac implements OpstiDomenskiObjekat{
     @Override
     public String vratiVrednostiZaIzmenu() {
         return "ime='"+ime+"',prezime='"+prezime+"',brojTelefona='"+brojTelefona+"',mesto="+mesto.getIdMesto();
+    }
+
+    @Override
+    public void postaviID(int generatedID) {
+        idProizvodjac = generatedID;
     }
 }

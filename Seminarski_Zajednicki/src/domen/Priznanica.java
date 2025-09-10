@@ -5,8 +5,8 @@
 package domen;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,9 +14,10 @@ import java.util.Objects;
  *
  * @author Bojana
  */
-public class Priznanica implements OpstiDomenskiObjekat{
+public class Priznanica implements OpstiDomenskiObjekat {
+
     private int idPriznanica;
-    private Date datumIzdavanja;
+    private LocalDate datumIzdavanja;
     private double ukupnaVrednost;
     private List<StavkaPriznanice> stavkePriznanice = new ArrayList<>();
     private Otkupljivac otkupljivac;
@@ -25,7 +26,7 @@ public class Priznanica implements OpstiDomenskiObjekat{
     public Priznanica() {
     }
 
-    public Priznanica(int idPriznanica, Date datumIzdavanja, double ukupnaVrednost, List<StavkaPriznanice> stavkePriznanice, Otkupljivac otkupljivac, Proizvodjac proizvodjac) {
+    public Priznanica(int idPriznanica, LocalDate datumIzdavanja, double ukupnaVrednost, List<StavkaPriznanice> stavkePriznanice, Otkupljivac otkupljivac, Proizvodjac proizvodjac) {
         this.idPriznanica = idPriznanica;
         this.datumIzdavanja = datumIzdavanja;
         this.ukupnaVrednost = ukupnaVrednost;
@@ -42,11 +43,11 @@ public class Priznanica implements OpstiDomenskiObjekat{
         this.idPriznanica = idPriznanica;
     }
 
-    public Date getDatumIzdavanja() {
+    public LocalDate getDatumIzdavanja() {
         return datumIzdavanja;
     }
 
-    public void setDatumIzdavanja(Date datumIzdavanja) {
+    public void setDatumIzdavanja(LocalDate datumIzdavanja) {
         this.datumIzdavanja = datumIzdavanja;
     }
 
@@ -84,7 +85,7 @@ public class Priznanica implements OpstiDomenskiObjekat{
 
     @Override
     public String toString() {
-        return "Priznanica{" + "idPriznanica=" + idPriznanica + ", datumIzdavanja=" + datumIzdavanja + ", ukupnaVrednost=" + ukupnaVrednost + ", stavkePriznanice=" + stavkePriznanice + ", otkupljivac=" + otkupljivac + ", proizvodjac=" + proizvodjac + '}';
+        return "ID: " + idPriznanica + "\nDatum izdavanja: " + datumIzdavanja + "\nUkupna vrednost: " + ukupnaVrednost + "\nOtkupljivač: " + otkupljivac + "\nProizvođač: " + proizvodjac;
     }
 
     @Override
@@ -119,51 +120,34 @@ public class Priznanica implements OpstiDomenskiObjekat{
     @Override
     public List<OpstiDomenskiObjekat> vratiListu(ResultSet rs) throws Exception {
         List<OpstiDomenskiObjekat> lista = new ArrayList<>();
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             int idPriznanice = rs.getInt("priznanica.idPriznanica");
-            Date datum = rs.getDate("priznanica.datumIzdavanja");
+            LocalDate datum = rs.getDate("priznanica.datumIzdavanja").toLocalDate();
             double ukupnaVrednost = rs.getDouble("priznanica.ukupnaVrednost");
-            
-            
+
             int idOtkupljivac = rs.getInt("otkupljivac.idOtkupljivac");
             String ime = rs.getString("otkupljivac.ime");
             String prezime = rs.getString("otkupljivac.prezime");
             String korisnickoIme = rs.getString("otkupljivac.korisnickoIme");
             String sifra = rs.getString("otkupljivac.sifra");
             Otkupljivac o = new Otkupljivac(idOtkupljivac, ime, prezime, korisnickoIme, sifra);
-            
+
             int idProizvodjac = rs.getInt("proizvodjac.idProizvodjac");
             String imeProizvodjac = rs.getString("proizvodjac.ime");
             String prezimeProizvodjac = rs.getString("proizvodjac.prezime");
             String brTel = rs.getString("proizvodjac.brojTelefona");
-            
-            int idMesto = rs.getInt("mesto.idMesto");
-            String naziv = rs.getString("mesto.naziv");
-            Mesto m = new Mesto(idMesto, naziv);
-            
+
+            int idMesto = rs.getInt("proizvodjac.mesto");
+            Mesto m = new Mesto();
+            m.setIdMesto(idMesto);
+
             Proizvodjac p = new Proizvodjac(idProizvodjac, imeProizvodjac, prezimeProizvodjac, brTel, m);
-            
-            Priznanica priznanica = new Priznanica(idPriznanice, datum, ukupnaVrednost, new ArrayList<StavkaPriznanice>(), o, p);
-            
-            int rb = rs.getInt("stavka_priznanice.rb");
-            String jedMere = rs.getString("stavka_priznanice.jedinicaMere");
-            double kol = rs.getDouble("stavka_priznanice.kolicina");
-            double cena = rs.getDouble("stavka_priznanice.cena");
-            
-            int idSorta = rs.getInt("sorta.idSorta");
-            String nazivSorte = rs.getString("sorta.naziv");
-            int kategorija = rs.getInt("sorta.kategorija");
-            double cenaSorte = rs.getDouble("sorta.cena");
-            
-            double vrednost = rs.getDouble("stavka_priznanice.vrednost");
-            Sorta s = new Sorta(idSorta, nazivSorte, kategorija, cenaSorte);
-            StavkaPriznanice sp = new StavkaPriznanice(priznanica, rb, jedMere, kol, cena, vrednost, s);
-            
-            priznanica.getStavkePriznanice().add(sp);
+
+            Priznanica priznanica = new Priznanica(idPriznanice, datum, ukupnaVrednost, stavkePriznanice, o, p);
             lista.add(priznanica);
         }
-        
+
         return lista;
     }
 
@@ -174,17 +158,21 @@ public class Priznanica implements OpstiDomenskiObjekat{
 
     @Override
     public String vratiVrednostiZaUbacivanje() {
-        return "'"+datumIzdavanja+"',"+ukupnaVrednost+","+otkupljivac.getIdOtkupljivac()+","+proizvodjac.getIdProizvodjac();
+        return "'" + datumIzdavanja + "'," + ukupnaVrednost + "," + otkupljivac.getIdOtkupljivac() + "," + proizvodjac.getIdProizvodjac();
     }
 
     @Override
     public String vratiPrimarniKljuc() {
-        return "priznanica.idPriznanice="+idPriznanica;
+        return "priznanica.idPriznanica=" + idPriznanica;
     }
 
     @Override
     public String vratiVrednostiZaIzmenu() {
-        return "datumIzdavanja='"+datumIzdavanja+"',ukupnaVrednost="+ukupnaVrednost+",otkupljivac="+otkupljivac.getIdOtkupljivac()+",proizvodjac="+proizvodjac.getIdProizvodjac();
+        return "datumIzdavanja='" + datumIzdavanja + "',ukupnaVrednost=" + ukupnaVrednost + ",otkupljivac=" + otkupljivac.getIdOtkupljivac() + ",proizvodjac=" + proizvodjac.getIdProizvodjac();
     }
-    
+
+    @Override
+    public void postaviID(int generatedID) {
+        idPriznanica = generatedID;
+    }
 }

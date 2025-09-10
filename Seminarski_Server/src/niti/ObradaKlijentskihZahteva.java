@@ -7,6 +7,7 @@ package niti;
 import controller.Controller;
 import domen.Mesto;
 import domen.Otkupljivac;
+import domen.Priznanica;
 import domen.Proizvodjac;
 import domen.Sorta;
 import domen.VrstaVoca;
@@ -180,6 +181,39 @@ public class ObradaKlijentskihZahteva extends Thread {
                         Otkupljivac otkupljivac2 = (Otkupljivac) zahtev.getParametar();
                         Controller.getInstance().azurirajOtkupljivaca(otkupljivac2);
                         odgovor.setOdgovor(null);
+                        break;
+                    case UCITAJ_PRIZNANICE:
+                        List<Priznanica> priznanice = Controller.getInstance().ucitajPriznanice();
+                        odgovor.setOdgovor(priznanice);
+                        break;
+                    case OBRISI_PRIZNANICU:
+                        try {
+                            Priznanica priznanica = (Priznanica) zahtev.getParametar();
+                            Controller.getInstance().obrisiPriznanicu(priznanica);
+                            odgovor.setOdgovor(null);
+                        } catch (Exception e) {
+                            odgovor.setOdgovor(e);
+                        }
+                        break;
+                    case DODAJ_PRIZNANICU:
+                        try {
+                            Priznanica priznanica  = (Priznanica) zahtev.getParametar();
+                            Controller.getInstance().dodajPriznanicu(priznanica);
+                            System.out.println("priznanica okz:"+priznanica);
+                            odgovor.setOdgovor(priznanica);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
+                        break;
+                        case AZURIRAJ_PRIZNANICU:
+                        try {
+                            Priznanica priznanica  = (Priznanica) zahtev.getParametar();
+                            Controller.getInstance().azurirajPriznanicu(priznanica);
+                            System.out.println("priznanica okz:"+priznanica);
+                            odgovor.setOdgovor(priznanica);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
                         break;
                     default:
                         System.out.println("Greska!Operacija ne postoji!");

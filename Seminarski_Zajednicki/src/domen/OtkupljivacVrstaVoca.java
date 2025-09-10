@@ -131,4 +131,9 @@ public class OtkupljivacVrstaVoca implements OpstiDomenskiObjekat{
     public String vratiVrednostiZaIzmenu() {
         return "otkupljivac="+otkupljivac.getIdOtkupljivac()+",vrsta_voca="+vrstaVoca.getIdVrstaVoca()+",datumOtkupa='"+datumOtkupa+"'";
     }
+
+    @Override
+    public void postaviID(int generatedID) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

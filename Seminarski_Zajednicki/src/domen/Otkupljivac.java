@@ -74,7 +74,7 @@ public class Otkupljivac implements OpstiDomenskiObjekat {
 
     @Override
     public String toString() {
-        return "Otkupljivač: " + ime + " " + prezime;
+        return  ime + " " + prezime;
     }
 
     @Override
@@ -140,6 +140,11 @@ public class Otkupljivac implements OpstiDomenskiObjekat {
     @Override
     public String vratiVrednostiZaIzmenu() {
         return "ime='" + ime + "',prezime='" + prezime + "',korisnickoIme='" + korisnickoIme + "',sifra='" + sifra + "'";
+    }
+
+    @Override
+    public void postaviID(int generatedID) {
+        idOtkupljivac = generatedID;
     }
 
 }

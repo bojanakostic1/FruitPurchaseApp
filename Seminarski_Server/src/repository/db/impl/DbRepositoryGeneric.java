@@ -4,6 +4,7 @@
  */
 package repository.db.impl;
 
+import java.sql.PreparedStatement;
 import domen.OpstiDomenskiObjekat;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class DbRepositoryGeneric implements DbRepository<OpstiDomenskiObjekat> {
         List<OpstiDomenskiObjekat> lista = new ArrayList<>();
         String upit = "SELECT * FROM " + param.vratiNazivTabele();
         if (uslov != null) {
-            upit += uslov;//to do
+            upit += uslov;
         }
         System.out.println(upit);
         Statement st = DbConnectionFactory.getInstance().getConnection().createStatement();
@@ -38,9 +39,16 @@ public class DbRepositoryGeneric implements DbRepository<OpstiDomenskiObjekat> {
     public void add(OpstiDomenskiObjekat param) throws Exception {
         String upit = "INSERT INTO " + param.vratiNazivTabele() + " (" + param.vratiNaziveKolonaZaUbacivanje() + ") " + " VALUES (" + param.vratiVrednostiZaUbacivanje() + ")";
         System.out.println(upit);
-        Statement st = DbConnectionFactory.getInstance().getConnection().createStatement();
-        st.executeUpdate(upit);
-        st.close();
+        PreparedStatement ps = DbConnectionFactory.getInstance().getConnection().prepareStatement(upit,Statement.RETURN_GENERATED_KEYS);
+        ps.executeUpdate();
+        ResultSet rs = ps.getGeneratedKeys();
+        if(rs.next()){
+            int generatedID = rs.getInt(1);
+            param.postaviID(generatedID);
+            System.out.println("id u repository generic:"+generatedID);
+        }
+        rs.close();
+        ps.close();
     }
 
     @Override
@@ -60,12 +68,4 @@ public class DbRepositoryGeneric implements DbRepository<OpstiDomenskiObjekat> {
         st.executeUpdate(upit);
         st.close();
     }
-
-    @Override
-    public List<OpstiDomenskiObjekat> getAll() {//to do
-        List<OpstiDomenskiObjekat> lista = new ArrayList<>();
-
-        return lista;
-    }
-
 }

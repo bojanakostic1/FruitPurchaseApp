@@ -47,6 +47,9 @@ public class GlavnaForma extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Evidencija otkupa voća");
@@ -158,6 +161,26 @@ public class GlavnaForma extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu5);
 
+        jMenu6.setText("Priznanica");
+
+        jMenuItem9.setText("Dodaj");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem9);
+
+        jMenuItem10.setText("Prikaz");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem10);
+
+        jMenuBar1.add(jMenu6);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -228,6 +251,14 @@ public class GlavnaForma extends javax.swing.JFrame {
         GlavniKontroler.getInstance().otvoriDodajOtkupljivacaFormu();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        GlavniKontroler.getInstance().otvoriPrikazPriznanicaFormu();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+         GlavniKontroler.getInstance().otvoriDodajPriznanicuFormu();
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     public JLabel getLblUlogovani() {
         return lblUlogovani;
     }
@@ -243,8 +274,10 @@ public class GlavnaForma extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -252,6 +285,7 @@ public class GlavnaForma extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuItem jMenuItemDodajMesto;
     private javax.swing.JMenuItem jMenuItemPrikazMesto;
     private javax.swing.JLabel lblUlogovani;

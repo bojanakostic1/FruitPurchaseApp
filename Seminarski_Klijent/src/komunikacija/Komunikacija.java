@@ -6,6 +6,7 @@ package komunikacija;
 
 import domen.Mesto;
 import domen.Otkupljivac;
+import domen.Priznanica;
 import domen.Proizvodjac;
 import domen.Sorta;
 import domen.VrstaVoca;
@@ -282,9 +283,9 @@ public class Komunikacija {
     public void obrisiOtkupljivaca(Otkupljivac o) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.OBRISI_OTKUPLJIVACA, o);
         posiljalac.posalji(zahtev);
-        
+
         Odgovor odgovor = (Odgovor) primalac.primi();
-         if (odgovor.getOdgovor() == null) {
+        if (odgovor.getOdgovor() == null) {
             System.out.println("Sistem je obrisao otkupljivaca!");
         } else {
             System.out.println("Sistem nije obrisao otkupljivaca!");
@@ -296,9 +297,9 @@ public class Komunikacija {
     public void dodajOtkupljivaca(Otkupljivac otkupljivac) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.DODAJ_OTKUPLJIVACA, otkupljivac);
         posiljalac.posalji(zahtev);
-        
+
         Odgovor odgovor = (Odgovor) primalac.primi();
-         if (odgovor.getOdgovor() == null) {
+        if (odgovor.getOdgovor() == null) {
             System.out.println("Otkupljivac je uspesno dodat!");
         } else {
             System.out.println("Otkupljivac nije uspešno dodat!");
@@ -310,7 +311,7 @@ public class Komunikacija {
     public void azurirajOtkupljivaca(Otkupljivac otkupljivac) {
         Zahtev zahtev = new Zahtev(Operacija.AZURIRAJ_OTKUPLJIVACA, otkupljivac);
         posiljalac.posalji(zahtev);
-        
+
         Odgovor odgovor = (Odgovor) primalac.primi();
         if (odgovor.getOdgovor() == null) {
             System.out.println("Sistem je azurirao otkupljivaca!");
@@ -318,7 +319,67 @@ public class Komunikacija {
         } else {
             System.out.println("Sistem nije uspesno azurirao otkupljivaca!");
         }
-        
+
+    }
+
+    public List<Priznanica> ucitajPrizananice() {
+        List<Priznanica> priznanice = new ArrayList<>();
+        Zahtev zahtev = new Zahtev(Operacija.UCITAJ_PRIZNANICE, null);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odg = (Odgovor) primalac.primi();
+        priznanice = (List<Priznanica>) odg.getOdgovor();
+        return priznanice;
+    }
+
+    public void obrisiPriznanicu(Priznanica p) throws Exception {
+        Zahtev z = new Zahtev(Operacija.OBRISI_PRIZNANICU, p);
+        posiljalac.posalji(z);
+
+        Odgovor odg = (Odgovor) primalac.primi();
+        if (odg.getOdgovor() == null) {
+            System.out.println("Uspešno obrisana priznanica!");
+        } else {
+            System.out.println("Neuspešno brisanje priznanice!");
+            ((Exception) odg.getOdgovor()).printStackTrace();
+            throw new Exception("Greska");
+        }
+    }
+
+    public Priznanica dodajPriznanicu(Priznanica priznanica) throws Exception {
+        System.out.println("ID pre slanja u komunikaciju: " + priznanica.getIdPriznanica());
+        Zahtev zahtev = new Zahtev(Operacija.DODAJ_PRIZNANICU, priznanica);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        if (odgovor.getOdgovor() instanceof Priznanica) {
+            priznanica = (Priznanica) odgovor.getOdgovor();
+            System.out.println("Priznanica je uspesno dodata!");
+            System.out.println("komunikacija priznanica:" + priznanica);
+            return priznanica;
+        } else {
+            System.out.println("Priznanica nije uspešno dodata!");
+            System.out.println(odgovor.getOdgovor());
+            throw new Exception("Greška.");
+        }
+    }
+
+    public Priznanica azurirajPriznanicu(Priznanica priznanica) throws Exception {
+        System.out.println("ID pre slanja u komunikaciju: " + priznanica.getIdPriznanica());
+        Zahtev zahtev = new Zahtev(Operacija.AZURIRAJ_PRIZNANICU, priznanica);
+        posiljalac.posalji(zahtev);
+
+        Odgovor odgovor = (Odgovor) primalac.primi();
+        if (odgovor.getOdgovor() instanceof Priznanica) {
+            priznanica = (Priznanica) odgovor.getOdgovor();
+            System.out.println("Priznanica je uspesno azurirana!");
+            System.out.println("komunikacija priznanica:" + priznanica);
+            return priznanica;
+        } else {
+            System.out.println("Priznanica nije uspešno azurirana!");
+            System.out.println(odgovor.getOdgovor());
+            throw new Exception("Greška.");
+        }
     }
 
 }

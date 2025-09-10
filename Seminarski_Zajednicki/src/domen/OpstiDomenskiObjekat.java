@@ -19,4 +19,5 @@ public interface OpstiDomenskiObjekat extends Serializable{
     public List<OpstiDomenskiObjekat> vratiListu(ResultSet rs) throws Exception;
     public String vratiPrimarniKljuc();
     public String vratiVrednostiZaIzmenu();
+    public void postaviID(int generatedID);
 }

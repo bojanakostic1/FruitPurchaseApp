@@ -6,6 +6,7 @@ package controller;
 
 import domen.Mesto;
 import domen.Otkupljivac;
+import domen.Priznanica;
 import domen.Proizvodjac;
 import domen.Sorta;
 import domen.VrstaVoca;
@@ -20,6 +21,10 @@ import operacije.otkupljivaci.KreirajOtkupljivacaSO;
 import operacije.otkupljivaci.ObrisiOtkupljivacaSO;
 import operacije.otkupljivaci.PromeniOtkupljivacaSO;
 import operacije.otkupljivaci.UcitajOtkupljivaceSO;
+import operacije.priznanice.KreirajPriznanicuSO;
+import operacije.priznanice.ObrisiPriznanicuSO;
+import operacije.priznanice.PromeniPriznanicuSO;
+import operacije.priznanice.UcitajPriznaniceSO;
 import operacije.proizvodjaci.KreirajProizvodjacaSO;
 import operacije.proizvodjaci.PromeniProizvodjacaSO;
 import operacije.proizvodjaci.UcitajProizvodjaceSO;
@@ -53,14 +58,14 @@ public class Controller {
     public Otkupljivac login(Otkupljivac o) throws Exception {
         PrijaviSO prijaviSO = new PrijaviSO();
         prijaviSO.izvrsi(o, null);
-        System.out.println("Klasa Controller: "+prijaviSO.getOtkupljivac());
+        System.out.println("Klasa Controller: " + prijaviSO.getOtkupljivac());
         return prijaviSO.getOtkupljivac();
     }
 
     public List<Proizvodjac> ucitajProizvodjace() throws Exception {
         UcitajProizvodjaceSO ucitajProizvodjaceSO = new UcitajProizvodjaceSO();
         ucitajProizvodjaceSO.izvrsi(null, null);
-        System.out.println("Klasa Controller: "+ucitajProizvodjaceSO.getSviProizvodjaci());
+        System.out.println("Klasa Controller: " + ucitajProizvodjaceSO.getSviProizvodjaci());
         return ucitajProizvodjaceSO.getSviProizvodjaci();
     }
 
@@ -72,7 +77,7 @@ public class Controller {
     public List<Mesto> ucitajMesta() throws Exception {
         UcitajMestaSO ucitajMestaSO = new UcitajMestaSO();
         ucitajMestaSO.izvrsi(null, null);
-        System.out.println("Klasa Controller: "+ucitajMestaSO.getSvaMesta());
+        System.out.println("Klasa Controller: " + ucitajMestaSO.getSvaMesta());
         return ucitajMestaSO.getSvaMesta();
     }
 
@@ -145,7 +150,7 @@ public class Controller {
 
     public List<Otkupljivac> ucitajOtkupljivace() throws Exception {
         UcitajOtkupljivaceSO ucitajOtkupljivaceSO = new UcitajOtkupljivaceSO();
-        ucitajOtkupljivaceSO.izvrsi(null, null); 
+        ucitajOtkupljivaceSO.izvrsi(null, null);
         return ucitajOtkupljivaceSO.getLista();
     }
 
@@ -164,6 +169,24 @@ public class Controller {
         promeniOtkupljivacaSO.izvrsi(otkupljivac2, null);
     }
 
-    
+    public List<Priznanica> ucitajPriznanice() throws Exception {
+        UcitajPriznaniceSO ucitajPriznaniceSO = new UcitajPriznaniceSO();
+        ucitajPriznaniceSO.izvrsi(null, null);
+        return ucitajPriznaniceSO.getSvePriznanice();
+    }
 
+    public void obrisiPriznanicu(Priznanica priznanica) throws Exception {
+        ObrisiPriznanicuSO obrisiPriznanicuSO = new ObrisiPriznanicuSO();
+        obrisiPriznanicuSO.izvrsi(priznanica, null);
+    }
+
+    public void dodajPriznanicu(Priznanica priznanica) throws Exception {
+        KreirajPriznanicuSO kreirajPriznanicuSO = new KreirajPriznanicuSO();
+        kreirajPriznanicuSO.izvrsi(priznanica, null);
+    }
+
+    public void azurirajPriznanicu(Priznanica priznanica) throws Exception {
+        PromeniPriznanicuSO promeniPriznanicuSO = new PromeniPriznanicuSO();
+        promeniPriznanicuSO.izvrsi(priznanica, null);
+    }
 }

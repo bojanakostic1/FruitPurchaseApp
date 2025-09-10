@@ -6,6 +6,7 @@ package kontroler;
 
 import controller.DodajMestoController;
 import controller.DodajOtkupljivacaController;
+import controller.DodajPriznanicuController;
 import controller.DodajProizvodjacaController;
 import controller.DodajSortuController;
 import controller.DodajVrstuVocaController;
@@ -13,12 +14,14 @@ import controller.GlavnaFormaController;
 import controller.LoginController;
 import controller.PrikazMestaController;
 import controller.PrikazOtkupljivacaController;
+import controller.PrikazPriznanicaController;
 import controller.PrikazProizvodjacaController;
 import controller.PrikazSortiController;
 import controller.PrikazVrstaVocaController;
 import domen.Otkupljivac;
 import forme.DodajMestoForma;
 import forme.DodajOtkupljivacaForma;
+import forme.DodajPriznanicuForma;
 import forme.DodajProizvodjacaForma;
 import forme.DodajSortuForma;
 import forme.DodajVrstuVocaForma;
@@ -27,6 +30,7 @@ import forme.GlavnaForma;
 import forme.LoginForma;
 import forme.PrikazMestaForma;
 import forme.PrikazOtkupljivacaForma;
+import forme.PrikazPriznanicaForma;
 import forme.PrikazProizvodjacaForma;
 import forme.PrikazSortiForma;
 import forme.PrikazVrstaVocaForma;
@@ -53,6 +57,8 @@ public class GlavniKontroler {
     private DodajVrstuVocaController dodajVrstuVocaController;
     private PrikazOtkupljivacaController prikazOtkupljivacaController;
     private DodajOtkupljivacaController dodajOtkupljivacaController;
+    private PrikazPriznanicaController prikazPriznanicaController;
+    private DodajPriznanicuController dodajPriznanicuController;
     
     private GlavniKontroler() {
         parametri = new HashMap<>();
@@ -185,6 +191,21 @@ public class GlavniKontroler {
 
     public void osveziPrikazOtkupljivacaFormu() {
         prikazOtkupljivacaController.osveziFormu();
+    }
+
+    public void otvoriPrikazPriznanicaFormu() {
+        prikazPriznanicaController = new PrikazPriznanicaController(new PrikazPriznanicaForma());
+        prikazPriznanicaController.otvoriFormu();
+    }
+
+    public void otvoriDodajPriznanicuFormu() {
+        dodajPriznanicuController = new DodajPriznanicuController(new DodajPriznanicuForma());
+        dodajPriznanicuController.otvoriFormu(FormaMod.DODAJ);
+    }
+
+    public void otvoriIzmeniPriznanicuFormu() {
+        dodajPriznanicuController = new DodajPriznanicuController(new DodajPriznanicuForma());
+        dodajPriznanicuController.otvoriFormu(FormaMod.IZMENI);
     }
     
 }

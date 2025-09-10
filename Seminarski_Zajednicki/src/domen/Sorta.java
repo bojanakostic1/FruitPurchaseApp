@@ -63,7 +63,7 @@ public class Sorta implements OpstiDomenskiObjekat{
 
     @Override
     public String toString() {
-        return "\nNaziv: "+naziv+"\nKategorija: " + kategorija + "\nCena: " + cena;
+        return naziv+" - " + kategorija + " (" + cena+" din)";
     }
 
     @Override
@@ -125,5 +125,10 @@ public class Sorta implements OpstiDomenskiObjekat{
     @Override
     public String vratiVrednostiZaIzmenu() {
         return "naziv='"+naziv+"',kategorija="+kategorija+",cena="+cena;    
+    }
+
+    @Override
+    public void postaviID(int generatedID) {
+        idSorta = generatedID;
     }
 }

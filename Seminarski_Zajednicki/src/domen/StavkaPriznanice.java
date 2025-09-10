@@ -140,9 +140,11 @@ public class StavkaPriznanice implements OpstiDomenskiObjekat{
             double cena = rs.getDouble("stavka_priznanice.cena");
             double vrednost = rs.getDouble("vrednost");
             
-            int idSorta = rs.getInt("sorta");
-            Sorta sorta = new Sorta();
-            sorta.setIdSorta(idSorta);
+            int idSorta = rs.getInt("sorta.idSorta");
+            String nazivSorte = rs.getString("sorta.naziv");
+            int kategorijaSorte = rs.getInt("sorta.kategorija");
+            double cenaSorte = rs.getDouble("sorta.cena");
+            Sorta sorta = new Sorta(idSorta, nazivSorte, kategorijaSorte, cenaSorte);
             
             StavkaPriznanice stavka = new StavkaPriznanice(priznanica, rb, jedinicaMere, kolicina, cena, vrednost, sorta);
             lista.add(stavka);
@@ -168,6 +170,10 @@ public class StavkaPriznanice implements OpstiDomenskiObjekat{
     @Override
     public String vratiVrednostiZaIzmenu() {
         return "jedinicaMere='"+jedinicaMere+"',kolicina="+kolicina+",cena="+cena+",vrednost="+vrednost+",sorta="+sorta.getIdSorta();
+    }
+
+    @Override
+    public void postaviID(int generatedID) {
     }
     
 }

@@ -104,5 +104,10 @@ public class VrstaVoca implements OpstiDomenskiObjekat{
     public String vratiVrednostiZaIzmenu() {
         return "naziv='"+naziv+"'";
     }
+
+    @Override
+    public void postaviID(int generatedID) {
+        idVrstaVoca = generatedID;
+    }
    
 }
