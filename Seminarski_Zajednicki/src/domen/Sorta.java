@@ -7,7 +7,6 @@ package domen;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -68,7 +67,8 @@ public class Sorta implements OpstiDomenskiObjekat{
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 3;
+        hash = 59 * hash + this.idSorta;
         return hash;
     }
 
@@ -84,9 +84,9 @@ public class Sorta implements OpstiDomenskiObjekat{
             return false;
         }
         final Sorta other = (Sorta) obj;
-        return Objects.equals(this.naziv, other.naziv);
+        return this.idSorta == other.idSorta;
     }
-
+   
     @Override
     public String vratiNazivTabele() {
         return "sorta";

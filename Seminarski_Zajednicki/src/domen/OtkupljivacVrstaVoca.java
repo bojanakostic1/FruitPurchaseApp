@@ -5,8 +5,8 @@
 package domen;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,12 +17,12 @@ import java.util.Objects;
 public class OtkupljivacVrstaVoca implements OpstiDomenskiObjekat{
     private Otkupljivac otkupljivac;
     private VrstaVoca vrstaVoca;
-    private Date datumOtkupa;
+    private LocalDate datumOtkupa;
 
     public OtkupljivacVrstaVoca() {
     }
 
-    public OtkupljivacVrstaVoca(Otkupljivac otkupljivac, VrstaVoca vrstaVoca, Date datumOtkupa) {
+    public OtkupljivacVrstaVoca(Otkupljivac otkupljivac, VrstaVoca vrstaVoca, LocalDate datumOtkupa) {
         this.otkupljivac = otkupljivac;
         this.vrstaVoca = vrstaVoca;
         this.datumOtkupa = datumOtkupa;
@@ -44,11 +44,11 @@ public class OtkupljivacVrstaVoca implements OpstiDomenskiObjekat{
         this.vrstaVoca = vrstaVoca;
     }
 
-    public Date getDatumOtkupa() {
+    public LocalDate getDatumOtkupa() {
         return datumOtkupa;
     }
 
-    public void setDatumOtkupa(Date datumOtkupa) {
+    public void setDatumOtkupa(LocalDate datumOtkupa) {
         this.datumOtkupa = datumOtkupa;
     }
 
@@ -105,7 +105,7 @@ public class OtkupljivacVrstaVoca implements OpstiDomenskiObjekat{
             String naziv = rs.getString("vrsta_voca.naziv");
             VrstaVoca vv = new VrstaVoca(idVrstaVoca, naziv);
             
-            Date datumOtkupa = rs.getDate("otkupljivac_vrsta_voca.datumOtkupa");
+            LocalDate datumOtkupa = rs.getDate("otkupljivac_vrsta_voca.datumOtkupa").toLocalDate();
             OtkupljivacVrstaVoca ovv = new OtkupljivacVrstaVoca(o, vv, datumOtkupa);
             lista.add(ovv);
         }

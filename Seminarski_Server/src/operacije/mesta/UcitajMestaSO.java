@@ -21,11 +21,13 @@ public class UcitajMestaSO extends ApstraktnaGenerickaOperacija{
 
     @Override
     protected void preduslovi(Object objekat) throws Exception {
-       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      if (objekat == null || !(objekat instanceof Mesto)) {
+            throw new Exception("Sistem ne može da nađe mesto.");
+        }
     }
 
     @Override
-    protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
+    protected void izvrsiOperaciju(Object objekat) throws Exception {
         svaMesta = broker.getAll(new Mesto(), null);
         System.out.println("UcitajMestaSO: "+svaMesta);
     }

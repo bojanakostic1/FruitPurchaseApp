@@ -21,11 +21,13 @@ public class UcitajProizvodjaceSO extends ApstraktnaGenerickaOperacija{
     
     @Override
     protected void preduslovi(Object objekat) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (objekat == null || !(objekat instanceof Proizvodjac)) {
+            throw new Exception("Sistem ne može da nađe proizvođača.");
+        }
     }
 
     @Override
-    protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
+    protected void izvrsiOperaciju(Object objekat) throws Exception {
         String uslov = " JOIN mesto ON mesto.idMesto=proizvodjac.mesto";
         sviProizvodjaci = broker.getAll(new Proizvodjac(), uslov);
         System.out.println("UcitajProizvodjaceSO:"+sviProizvodjaci);

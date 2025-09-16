@@ -13,6 +13,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -82,6 +84,14 @@ public class PrikazVrstaVocaController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String naziv = pvvf.getTxtNaziv().getText().trim();
+                try {
+                    Validator.startValidation()
+                            .validateNotNullOrEmpty(naziv, "Naziv vrste voća je obavezno polje.")
+                            .validateOnlyLettersAndSpaces(naziv, "Naziv može sadržati samo slova.")
+                            .throwIfInvalide();
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(pvvf, ve.getMessage(), "Greške pri validaciji", JOptionPane.ERROR_MESSAGE);
+                }
                 ModelTabeleVrsteVoca model = (ModelTabeleVrsteVoca) pvvf.getTblVrsteVoca().getModel();
                 int brojRezultata = model.pretrazi(naziv);
                 if (brojRezultata == 0) {

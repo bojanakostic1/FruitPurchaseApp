@@ -26,13 +26,15 @@ public class KreirajVrstuVocaSO extends ApstraktnaGenerickaOperacija {
         }
 
         List<VrstaVoca> vrsteVoca = broker.getAll(objekat, " WHERE naziv='" + vrsta.getNaziv() + "'");
-        if (vrsteVoca.contains(objekat)) {
-            throw new Exception("Greška. Vrsta voća sa tim nazivom već postoji u bazi.");
+        for (VrstaVoca vrstaVoca : vrsteVoca) {
+            if(vrstaVoca.equals(vrsta)){
+                throw new Exception("Greška. Vrsta voća sa tim nazivom već postoji u bazi.");
+            }
         }
     }
 
     @Override
-    protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
+    protected void izvrsiOperaciju(Object objekat) throws Exception {
         broker.add((VrstaVoca) objekat);
     }
 

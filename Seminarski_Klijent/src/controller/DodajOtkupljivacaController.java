@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -64,11 +66,25 @@ public class DodajOtkupljivacaController {
         dof.dodajAddActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ime = dof.getTxtIme().getText().trim();
-                String prezime = dof.getTxtPrezime().getText().trim();
-                String korisnickoIme = dof.getTxtKorisnickoIme().getText().trim();
-                String sifra = new String(dof.getTxtSifra().getPassword()); //da li odraditi hesiranje
                 try {
+                    String ime = dof.getTxtIme().getText().trim();
+                    String prezime = dof.getTxtPrezime().getText().trim();
+                    String korisnickoIme = dof.getTxtKorisnickoIme().getText().trim();
+                    String sifra = String.valueOf(dof.getTxtSifra().getPassword());
+                    Validator validator = Validator.startValidation()
+                            .validateNotNullOrEmpty(ime, "Ime je obavezno.")
+                            .validateOnlyLettersAndSpaces(ime, "Ime može sadržati samo slova.")
+                            .validateNotNullOrEmpty(prezime, "Prezime je obavezno.")
+                            .validateOnlyLettersAndSpaces(prezime, "Prezime može sadržati samo slova.")
+                            .validateNotNullOrEmpty(korisnickoIme, "Korisničko ime je obavezno.")
+                            .validateNotNullOrEmpty(sifra, "Šifra je obavezna.");
+                    try {
+                        validator.throwIfInvalide();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(dof, "Greške u validaciji:\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
                     Otkupljivac otkupljivac = new Otkupljivac(-1, ime, prezime, korisnickoIme, sifra);
                     JOptionPane.showMessageDialog(dof, "Sistem je kreirao otkupljivača.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
@@ -76,10 +92,11 @@ public class DodajOtkupljivacaController {
                         JOptionPane.showMessageDialog(dof, "Sistem je zapamtio otkupljivača.\n" + otkupljivac, "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         dof.dispose();
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(dof, "Sistem ne može da zapamti otkupljivača.", "Greška", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dof, "Sistem ne može da zapamti otkupljivača.\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (Exception exc) {
+                } catch (Exception ex) {
                     JOptionPane.showMessageDialog(dof, "Sistem ne može da kreira otkupljivača.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    dof.dispose();
                 }
             }
         });
@@ -92,13 +109,26 @@ public class DodajOtkupljivacaController {
                 String prezime = dof.getTxtPrezime().getText().trim();
                 String korisnickoIme = dof.getTxtKorisnickoIme().getText().trim();
                 String sifra = new String(dof.getTxtSifra().getPassword());
+                try {
+                            Validator.startValidation()
+                            .validateNotNullOrEmpty(ime, "Ime je obavezno.")
+                            .validateOnlyLettersAndSpaces(ime, "Ime može sadržati samo slova.")
+                            .validateNotNullOrEmpty(prezime, "Prezime je obavezno.")
+                            .validateOnlyLettersAndSpaces(prezime, "Prezime može sadržati samo slova.")
+                            .validateNotNullOrEmpty(korisnickoIme, "Korisničko ime je obavezno.")
+                            .validateNotNullOrEmpty(sifra, "Šifra je obavezna.")
+                                    .throwIfInvalide();
+                } catch (ValidationException ex) {
+                    JOptionPane.showMessageDialog(dof, "Greške u validaciji:\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 Otkupljivac otkupljivac = new Otkupljivac(id, ime, prezime, korisnickoIme, sifra);
                 try {
                     Komunikacija.getInstance().azurirajOtkupljivaca(otkupljivac);
                     JOptionPane.showMessageDialog(dof, "Sistem je zapamtio otkupljivača.\n" + otkupljivac, "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     dof.dispose();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(dof, "Sistem ne može da zapamti otkupljivača.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dof, ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                 }
 
             }

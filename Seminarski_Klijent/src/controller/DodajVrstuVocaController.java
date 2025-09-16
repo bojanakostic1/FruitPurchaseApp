@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -35,19 +37,22 @@ public class DodajVrstuVocaController {
         dvvf.dodajAddActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String naziv = dvvf.getTxtNaziv().getText().trim();
                 try {
+                    String naziv = dvvf.getTxtNaziv().getText().trim();
+                    Validator validator = Validator.startValidation()
+                            .validateNotNullOrEmpty(naziv, "Naziv vrste voća je obavezno polje.")
+                            .validateOnlyLettersAndSpaces(naziv, "Naziv može sadržati samo slova.");
+                    validator.throwIfInvalide();
                     VrstaVoca vrstaVoca = new VrstaVoca(-1, naziv);
-                    JOptionPane.showMessageDialog(dvvf, "Sistem je kreirao vrstu voća.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         Komunikacija.getInstance().dodajVrstuVoca(vrstaVoca);
                         JOptionPane.showMessageDialog(dvvf, "Sistem je zapamtio vrstu voća.\n" + vrstaVoca.getNaziv(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         dvvf.dispose();
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(dvvf, "Sistem ne može da zapamti vrstu voća.", "Greška", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dvvf, "Sistem ne može da zapamti vrstu voća.\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(dvvf, "Sistem ne može da kreira vrstu voća.", "Greška", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ve) {
+                    JOptionPane.showMessageDialog(dvvf, ve.getMessage(), "Greške pri validaciji", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -55,15 +60,23 @@ public class DodajVrstuVocaController {
         dvvf.azurirajAddActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int id = Integer.parseInt(dvvf.getTxtId().getText().trim());
-                String naziv = dvvf.getTxtNaziv().getText().trim();
-                VrstaVoca vrsta = new VrstaVoca(id, naziv);
                 try {
-                    Komunikacija.getInstance().azurirajVrstuVoca(vrsta);
-                    JOptionPane.showMessageDialog(dvvf, "Sistem je zapamtio vrstu voća.\n" + vrsta, "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
-                    dvvf.dispose();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(dvvf, "Sistem ne može da zapamti vrstu voća.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    int id = Integer.parseInt(dvvf.getTxtId().getText().trim());
+                    String naziv = dvvf.getTxtNaziv().getText().trim();
+                    Validator.startValidation()
+                            .validateNotNullOrEmpty(naziv, "Naziv vrste voća je obavezno polje.")
+                            .validateOnlyLettersAndSpaces(naziv, "Naziv može sadržati samo slova.")
+                            .throwIfInvalide();
+                    VrstaVoca vrsta = new VrstaVoca(id, naziv);
+                    try {
+                        Komunikacija.getInstance().azurirajVrstuVoca(vrsta);
+                        JOptionPane.showMessageDialog(dvvf, "Sistem je zapamtio vrstu voća.\n" + vrsta, "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                        dvvf.dispose();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(dvvf, "Sistem ne može da zapamti vrstu voća.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(dvvf, ve.getMessage(), "Greške pri validaciji", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

@@ -32,13 +32,13 @@ public class KreirajOtkupljivacaSO extends ApstraktnaGenerickaOperacija {
             throw new Exception("Greška. Korisničko ime nije ispravno uneto.");
         }
 
-        if (otkupljivac.getSifra() == null || otkupljivac.getSifra().isEmpty()) {
-            throw new Exception("Greška. Šifra nije ispravno uneta.");
+        if (otkupljivac.getSifra() == null || otkupljivac.getSifra().isEmpty() || otkupljivac.getSifra().length()<8) {
+            throw new Exception("Greška. Šifra treba da sadrži najmanje 8 karaktera.");
         }
     }
 
     @Override
-    protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
+    protected void izvrsiOperaciju(Object objekat) throws Exception {
         broker.add((Otkupljivac) objekat);
     }
 

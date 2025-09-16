@@ -45,7 +45,6 @@ public class DbRepositoryGeneric implements DbRepository<OpstiDomenskiObjekat> {
         if(rs.next()){
             int generatedID = rs.getInt(1);
             param.postaviID(generatedID);
-            System.out.println("id u repository generic:"+generatedID);
         }
         rs.close();
         ps.close();

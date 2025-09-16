@@ -33,7 +33,7 @@ public class PromeniSortuSO extends ApstraktnaGenerickaOperacija{
     }
 
     @Override
-    protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
+    protected void izvrsiOperaciju(Object objekat) throws Exception {
         broker.edit(objekat);
     }
     

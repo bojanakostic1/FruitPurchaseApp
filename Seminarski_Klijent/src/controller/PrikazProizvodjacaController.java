@@ -14,6 +14,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -32,8 +34,6 @@ public class PrikazProizvodjacaController {
         ucitajMesta();
         pripremiFormu();
         ppf.setVisible(true);
-        //ucitaj sve proizvodjace i povezi sa modelom tabele
-
     }
 
     public void pripremiFormu() {
@@ -56,10 +56,10 @@ public class PrikazProizvodjacaController {
                 } else {
                     ModelTabeleProizvodjaci mtp = (ModelTabeleProizvodjaci) ppf.getTblProizvodjaci().getModel();
                     Proizvodjac p = mtp.getLista().get(red);
-                    JOptionPane.showMessageDialog(ppf, "Sistem je našao proizvođača.\n"+p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(ppf, "Sistem je našao proizvođača.\n" + p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         Komunikacija.getInstance().obrisiProizvodjaca(p);
-                        JOptionPane.showMessageDialog(null, "Sistem je obrisao proizvođača.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(ppf, "Sistem je obrisao proizvođača.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         pripremiFormu();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(ppf, "Sistem ne može da obriše proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
@@ -89,16 +89,29 @@ public class PrikazProizvodjacaController {
         ppf.addBtnPretraziActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ime = ppf.getTxtIme().getText().trim();
-                String prezime = ppf.getTxtPrezime().getText().trim();
-                Mesto mesto = (Mesto) ppf.getCmbMesto().getSelectedItem();
+                try {
+                    String ime = ppf.getTxtIme().getText().trim();
+                    String prezime = ppf.getTxtPrezime().getText().trim();
+                    Mesto mesto = (Mesto) ppf.getCmbMesto().getSelectedItem();
 
-                ModelTabeleProizvodjaci mtp = (ModelTabeleProizvodjaci) ppf.getTblProizvodjaci().getModel();
-                int brojRezultata = mtp.pretrazi(ime, prezime, mesto);
-                if (brojRezultata == 0) {
-                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe proizvođače po zadatim kriterijumima.", "Greška", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(ppf, "Sistem je našao proizvođače po zadatim kriterijumima.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                    if(ime!=null && !ime.isEmpty()){
+                       Validator.startValidation().validateOnlyLettersAndSpaces(ime, "Ime može sadržati isključivo slova!").throwIfInvalide();
+                    }
+                    if(prezime!=null && !prezime.isEmpty()){
+                       Validator.startValidation().validateOnlyLettersAndSpaces(prezime, "Prezime može sadržati isključivo slova!").throwIfInvalide();
+                    }
+
+                    ModelTabeleProizvodjaci mtp = (ModelTabeleProizvodjaci) ppf.getTblProizvodjaci().getModel();
+                    int brojRezultata = mtp.pretrazi(ime, prezime, mesto);
+                    if (brojRezultata == 0) {
+                        JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe proizvođače po zadatim kriterijumima.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(ppf, "Sistem je našao proizvođače po zadatim kriterijumima.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(ppf, ve.getMessage(), "Greška pri validaciji", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(ppf, ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

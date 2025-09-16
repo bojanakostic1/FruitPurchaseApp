@@ -4,8 +4,7 @@ package operacije.login;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
-
+import domen.OpstiDomenskiObjekat;
 import domen.Otkupljivac;
 import java.util.List;
 import operacije.ApstraktnaGenerickaOperacija;
@@ -28,26 +27,23 @@ public class PrijaviSO extends ApstraktnaGenerickaOperacija {
 
     @Override
     protected void preduslovi(Object objekat) throws Exception {
-        if(objekat == null || !(objekat instanceof Otkupljivac)){
-            throw  new Exception("Korisničko ime i šifra nisu ispravni.");
+        if (objekat == null || !(objekat instanceof Otkupljivac)) {
+            throw new Exception("Korisničko ime i šifra nisu ispravni.");
         }
     }
 
     @Override
-    protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
-        List<Otkupljivac> sviOtkupljivaci = broker.getAll(objekat, null);
+    protected void izvrsiOperaciju(Object objekat) throws Exception {
+        List<Otkupljivac> sviOtkupljivaci = broker.getAll((OpstiDomenskiObjekat) objekat, null);
         System.out.println("Klasa PrijaviSO " + sviOtkupljivaci);
 
-        if (sviOtkupljivaci.contains(objekat)) {
-            for (Otkupljivac o : sviOtkupljivaci) {
-                if (o.equals(objekat)) {
-                    otkupljivac = o;
-                    return;
-                }
+        for (Otkupljivac o : sviOtkupljivaci) {
+            if (o.equals(objekat)) {
+                otkupljivac = o;
+                return;
             }
-        } else {
-            otkupljivac = null;
         }
+        otkupljivac = null;
     }
 
 }

@@ -23,7 +23,7 @@ public class PromeniPriznanicuSO extends ApstraktnaGenerickaOperacija {
     }
 
     @Override
-    protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
+    protected void izvrsiOperaciju(Object objekat) throws Exception {
         Priznanica priznanica = (Priznanica) objekat;
         broker.edit(priznanica);
         String uslov = " JOIN sorta ON stavka_priznanice.sorta=sorta.idSorta WHERE priznanica = " + priznanica.getIdPriznanica();

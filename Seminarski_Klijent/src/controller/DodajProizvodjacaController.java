@@ -14,6 +14,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -42,22 +44,34 @@ public class DodajProizvodjacaController {
             }
 
             private void dodajProizvodjaca(ActionEvent e) {
-                String ime = dpf.getTxtImeProizvodjaca().getText().trim();
-                String prezime = dpf.getTxtPrezimeProizvodjaca().getText().trim();
-                String telefon = dpf.getTxtTelefonProizvodjaca().getText().trim();
-                Mesto mesto = (Mesto) dpf.getCmbMesta().getSelectedItem();
                 try {
+                    String ime = dpf.getTxtImeProizvodjaca().getText().trim();
+                    String prezime = dpf.getTxtPrezimeProizvodjaca().getText().trim();
+                    String telefon = dpf.getTxtTelefonProizvodjaca().getText().trim();
+                    Mesto mesto = (Mesto) dpf.getCmbMesta().getSelectedItem();
+
+                    Validator.startValidation().validateNotNullOrEmpty(ime, "Ime je obavezno polje!")
+                            .validateOnlyLettersAndSpaces(ime, "Ime može sadržati isključivo slova!")
+                            .validateNotNullOrEmpty(prezime, "Prezime je obavezno polje!")
+                            .validateOnlyLettersAndSpaces(prezime, "Prezime može sadržati isključivo slova!")
+                            .validateNotNullOrEmpty(telefon, "Broj telefona je obavezan!")
+                            .validatePhoneNumber(telefon, "Broj telefona treba da bude u formatu +381612345678")
+                            .validateNotNull(mesto, "Morate odabrati mesto iz kog je proizvođač.")
+                            .throwIfInvalide();
+
                     Proizvodjac p = new Proizvodjac(-1, ime, prezime, telefon, mesto);
-                    JOptionPane.showMessageDialog(dpf, "Sistem je kreirao proizvođača.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem je kreirao proizvođača\n" + p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         Komunikacija.getInstance().dodajProizvodjaca(p);
-                        JOptionPane.showMessageDialog(dpf, "Sistem je zapamtio proizvođača.\n"+p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(dpf, "Sistem je zapamtio proizvođača.\n" + p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         dpf.dispose();
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti proizvođača.\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                     }
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da kreira proizvođača.\n" + ve.getMessage(), "Greška pri validaciji", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception exc) {
-                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da kreira proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, exc.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -74,18 +88,30 @@ public class DodajProizvodjacaController {
                 String prezime = dpf.getTxtPrezimeProizvodjaca().getText().trim();
                 String telefon = dpf.getTxtTelefonProizvodjaca().getText().trim();
                 Mesto mesto = (Mesto) dpf.getCmbMesta().getSelectedItem();
+                try {
+                    Validator.startValidation().validateNotNullOrEmpty(ime, "Ime je obavezno polje!")
+                            .validateOnlyLettersAndSpaces(ime, "Ime može sadržati isključivo slova!")
+                            .validateNotNullOrEmpty(prezime, "Prezime je obavezno polje!")
+                            .validateOnlyLettersAndSpaces(prezime, "Prezime može sadržati isključivo slova!")
+                            .validateNotNullOrEmpty(telefon, "Broj telefona je obavezan!")
+                            .validatePhoneNumber(telefon, "Broj telefona treba da bude u formatu +381612345678")
+                            .validateNotNull(mesto, "Morate odabrati mesto iz kog je proizvođač.")
+                            .throwIfInvalide();
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti proizvođača.\n" + ve.getMessage(), "Greška pri validaciji.", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 Proizvodjac p = new Proizvodjac(id, ime, prezime, telefon, mesto);
                 try {
                     Komunikacija.getInstance().azurirajProizvodjaca(p);
-                    JOptionPane.showMessageDialog(dpf, "Sistem je zapamtio proizvođača.\n"+p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem je zapamtio proizvođača.\n" + p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     dpf.dispose();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti proizvođača.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti proizvođača.\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                 }
-
             }
         });
-        
+
         dpf.otkaziAddActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

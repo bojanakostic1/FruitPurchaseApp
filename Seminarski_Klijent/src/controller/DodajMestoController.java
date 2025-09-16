@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -39,8 +41,13 @@ public class DodajMestoController {
             }
 
             private void dodajMesto(ActionEvent e) {
-                String naziv = dmf.getTxtNaziv().getText().trim();
                 try {
+                    String naziv = dmf.getTxtNaziv().getText().trim();
+                    Validator validator = Validator.startValidation()
+                            .validateNotNullOrEmpty(naziv, "Naziv je obavezan.")
+                            .validateOnlyLettersAndSpaces(naziv, "Naziv može sadržati samo slova.");
+
+                    validator.throwIfInvalide();
                     Mesto mesto = new Mesto(-1, naziv);
                     JOptionPane.showMessageDialog(dmf, "Sistem je kreirao mesto.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
@@ -48,10 +55,13 @@ public class DodajMestoController {
                         JOptionPane.showMessageDialog(dmf, "Sistem je zapamtio mesto.\n" + mesto.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         dmf.dispose();
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(dmf, "Sistem ne može da zapamti mesto.", "Greška", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dmf, "Sistem ne može da zapamti mesto.\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                     }
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(dmf, ve.getMessage(), "Greške pri validaciji", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(dmf, "Sistem ne može da kreira mesto.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    dmf.dispose();
                 }
 
             }
@@ -64,15 +74,25 @@ public class DodajMestoController {
             }
 
             private void izmeniMesto(ActionEvent e) {
-                int id = Integer.parseInt(dmf.getTxtId().getText().trim());
-                String naziv = dmf.getTxtNaziv().getText().trim();
-                Mesto mesto = new Mesto(id, naziv);
                 try {
-                    Komunikacija.getInstance().azurirajMesto(mesto);
-                    JOptionPane.showMessageDialog(dmf, "Sistem je zapamtio mesto.\n" + mesto.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
-                    dmf.dispose();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(dmf, "Sistem ne može da zapamti mesto.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    int id = Integer.parseInt(dmf.getTxtId().getText().trim());
+                    String naziv = dmf.getTxtNaziv().getText().trim();
+
+                    Validator.startValidation()
+                            .validateNotNullOrEmpty(naziv, "Naziv je obavezan.")
+                            .validateOnlyLettersAndSpaces(naziv, "Naziv može sadržati samo slova.")
+                            .throwIfInvalide();
+
+                    Mesto mesto = new Mesto(id, naziv);
+                    try {
+                        Komunikacija.getInstance().azurirajMesto(mesto);
+                        JOptionPane.showMessageDialog(dmf, "Sistem je zapamtio mesto.\n" + mesto.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                        dmf.dispose();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(dmf, "Sistem ne može da zapamti mesto.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(dmf, ve.getMessage(), "Greška pri validaciji", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

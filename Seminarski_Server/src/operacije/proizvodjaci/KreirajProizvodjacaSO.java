@@ -31,12 +31,13 @@ public class KreirajProizvodjacaSO extends ApstraktnaGenerickaOperacija {
         if (p.getBrojTelefona()== null || p.getBrojTelefona().isEmpty()) {
             throw new Exception("Greška. Broj telefona nije ispravno unet.");
         }
-
-
+        if (p.getMesto()== null) {
+            throw new Exception("Greška. Niste izabrali mesto.");
+        }
     }
 
     @Override
-    protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
+    protected void izvrsiOperaciju(Object objekat) throws Exception {
         broker.add((Proizvodjac) objekat);
     }
 

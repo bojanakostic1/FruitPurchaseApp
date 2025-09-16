@@ -13,6 +13,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -36,7 +38,7 @@ public class PrikazMestaController {
         List<Mesto> mesta = komunikacija.Komunikacija.getInstance().ucitajMesta();
         ModelTabeleMesta mtm = new ModelTabeleMesta(mesta);
         pmf.getTblMesta().setModel(mtm);
-        
+
         pmf.getTxtNaziv().setText("");
     }
 
@@ -53,7 +55,7 @@ public class PrikazMestaController {
                     JOptionPane.showMessageDialog(pmf, "Sistem je našao mesto.\nMesto:" + m.getNaziv() + "," + m.getIdMesto(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         Komunikacija.getInstance().obrisiMesto(m);
-                        JOptionPane.showMessageDialog(null, "Sistem je obrisao mesto.", "Greška", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(pmf, "Sistem je obrisao mesto.", "Greška", JOptionPane.INFORMATION_MESSAGE);
                         pripremiFormu();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(pmf, "Sistem ne može da obriše mesto.", "Greška", JOptionPane.ERROR_MESSAGE);
@@ -85,6 +87,13 @@ public class PrikazMestaController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String naziv = pmf.getTxtNaziv().getText().trim();
+                try {
+                    Validator.startValidation()
+                            .validateOnlyLettersAndSpaces(naziv, "Naziv može sadržati samo slova.")
+                            .throwIfInvalide();
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(pmf, ve.getMessage(), "Greška pri validaciji", JOptionPane.ERROR_MESSAGE);
+                }
                 ModelTabeleMesta modelTabele = (ModelTabeleMesta) pmf.getTblMesta().getModel();
                 int brojRezultata = modelTabele.pretrazi(naziv);
                 if (brojRezultata == 0) {
@@ -95,13 +104,13 @@ public class PrikazMestaController {
             }
         }
         );
-        
-      pmf.addResetujPretraguActionListener(new ActionListener() {
+
+        pmf.addResetujPretraguActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 pripremiFormu();
             }
-      });
+        });
     }
 
     public void osveziFormu() {

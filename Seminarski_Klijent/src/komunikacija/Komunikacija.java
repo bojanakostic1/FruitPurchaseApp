@@ -98,7 +98,7 @@ public class Komunikacija {
         return mesta;
     }
 
-    public void dodajProizvodjaca(Proizvodjac p) {
+    public void dodajProizvodjaca(Proizvodjac p) throws Exception {
         Zahtev z = new Zahtev(Operacija.DODAJ_PROIZVODJACA, p);
         posiljalac.posalji(z);
 
@@ -106,12 +106,13 @@ public class Komunikacija {
         if (odg.getOdgovor() == null) {
             System.out.println("Novi proizvođač je uspešno dodat!");
         } else {
-            System.out.println("Novi proizvodjaca; nije upsešno dodat!");
+            System.out.println("Novi proizvođač nije upsešno dodat!");
+            ((Exception) odg.getOdgovor()).printStackTrace();
+            throw new Exception(((Exception) odg.getOdgovor()).getMessage());
         }
-
     }
 
-    public void azurirajProizvodjaca(Proizvodjac p) {
+    public void azurirajProizvodjaca(Proizvodjac p) throws Exception {
         Zahtev z = new Zahtev(Operacija.AZURIRAJ_PROIZVODJACA, p);
         posiljalac.posalji(z);
         Odgovor odg = (Odgovor) primalac.primi();
@@ -120,6 +121,8 @@ public class Komunikacija {
             GlavniKontroler.getInstance().osveziPrikazProizvodjacaFormu();
         } else {
             System.out.println("Sistem nije uspesno azurirao proizvodjaca!");
+            ((Exception) odg.getOdgovor()).printStackTrace();
+            throw new Exception(((Exception) odg.getOdgovor()).getMessage());
         }
     }
 
@@ -147,7 +150,7 @@ public class Komunikacija {
         } else {
             System.out.println("Mesto nije uspešno dodato!");
             ((Exception) odg.getOdgovor()).printStackTrace();
-            throw new Exception("Greška.");
+            throw new Exception(((Exception) odg.getOdgovor()).getMessage());
         }
 
     }
@@ -161,7 +164,7 @@ public class Komunikacija {
             System.out.println("Sistem je azurirao mesto!");
             GlavniKontroler.getInstance().osveziPrikazMestaFormu();
         } else {
-            System.out.println("Sistem nije uspesno azurirao proizvodjaca!");
+            System.out.println("Sistem nije uspesno azurirao mesto!");
         }
 
     }
@@ -200,7 +203,7 @@ public class Komunikacija {
         } else {
             System.out.println("Sorta nije uspešno dodata!");
             ((Exception) odg.getOdgovor()).printStackTrace();
-            throw new Exception("Greška.");
+            throw new Exception(((Exception) odg.getOdgovor()).getMessage());
         }
     }
 
@@ -252,7 +255,7 @@ public class Komunikacija {
         } else {
             System.out.println("Vrsta voća nije uspešno dodata!");
             ((Exception) odgovor.getOdgovor()).printStackTrace();
-            throw new Exception("Greška.");
+            throw new Exception(((Exception) odgovor.getOdgovor()).getMessage());
         }
 
     }
@@ -304,11 +307,11 @@ public class Komunikacija {
         } else {
             System.out.println("Otkupljivac nije uspešno dodat!");
             ((Exception) odgovor.getOdgovor()).printStackTrace();
-            throw new Exception("Greška.");
+            throw new Exception(((Exception) odgovor.getOdgovor()).getMessage());
         }
     }
 
-    public void azurirajOtkupljivaca(Otkupljivac otkupljivac) {
+    public void azurirajOtkupljivaca(Otkupljivac otkupljivac) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.AZURIRAJ_OTKUPLJIVACA, otkupljivac);
         posiljalac.posalji(zahtev);
 
@@ -317,7 +320,9 @@ public class Komunikacija {
             System.out.println("Sistem je azurirao otkupljivaca!");
             GlavniKontroler.getInstance().osveziPrikazOtkupljivacaFormu();
         } else {
-            System.out.println("Sistem nije uspesno azurirao otkupljivaca!");
+             System.out.println("Sistem nije uspesno azurirao otkupljivaca!");
+            ((Exception) odgovor.getOdgovor()).printStackTrace();
+            throw new Exception(((Exception) odgovor.getOdgovor()).getMessage());
         }
 
     }
@@ -360,7 +365,7 @@ public class Komunikacija {
         } else {
             System.out.println("Priznanica nije uspešno dodata!");
             System.out.println(odgovor.getOdgovor());
-            throw new Exception("Greška.");
+            throw new Exception(((Exception)odgovor.getOdgovor()).getMessage());
         }
     }
 

@@ -13,6 +13,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -36,7 +38,7 @@ public class PrikazOtkupljivacaController {
         List<Otkupljivac> otkupljivaci = Komunikacija.getInstance().ucitajOtkupljivace();
         ModelTabeleOtkupljivaci mto = new ModelTabeleOtkupljivaci(otkupljivaci);
         pof.getTblOtkupljivaci().setModel(mto);
-        
+
         pof.getTxtIme().setText("");
         pof.getTxtPrezime().setText("");
         pof.getTxtKorisnickoIme().setText("");
@@ -88,7 +90,16 @@ public class PrikazOtkupljivacaController {
                 String ime = pof.getTxtIme().getText().trim();
                 String prezime = pof.getTxtPrezime().getText().trim();
                 String korisnickoIme = pof.getTxtKorisnickoIme().getText().trim();
-
+                try {
+                    if (ime != null && !pof.getTxtIme().getText().trim().isEmpty()) {
+                        Validator.startValidation().validateOnlyLettersAndSpaces(ime, "Ime može sadržati samo slova.").throwIfInvalide();
+                    }
+                    if (prezime != null && !pof.getTxtPrezime().getText().trim().isEmpty()) {
+                        Validator.startValidation().validateOnlyLettersAndSpaces(prezime, "Prezime može sadržati samo slova.").throwIfInvalide();
+                    }
+                } catch (ValidationException ex) {
+                    JOptionPane.showMessageDialog(pof, "Greške u validaciji:\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
+                }
                 ModelTabeleOtkupljivaci mto = (ModelTabeleOtkupljivaci) pof.getTblOtkupljivaci().getModel();
                 int brojRezultata = mto.pretrazi(ime, prezime, korisnickoIme);
                 if (brojRezultata == 0) {

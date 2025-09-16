@@ -21,11 +21,13 @@ public class UcitajSorteSO extends ApstraktnaGenerickaOperacija{
     
     @Override
     protected void preduslovi(Object objekat) throws Exception {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(objekat == null || !(objekat instanceof Sorta)){
+            throw new Exception("Sistem ne može da nađe sortu.");
+        }
     }
 
     @Override
-    protected void izvrsiOperaciju(Object objekat, String kljuc) throws Exception {
+    protected void izvrsiOperaciju(Object objekat) throws Exception {
         listaSorti = broker.getAll(new Sorta(), null);
     }
     

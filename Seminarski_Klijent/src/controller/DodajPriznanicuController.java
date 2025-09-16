@@ -4,7 +4,6 @@
  */
 package controller;
 
-import com.sun.source.tree.ParenthesizedTree;
 import domen.Mesto;
 import domen.Otkupljivac;
 import domen.Priznanica;
@@ -23,6 +22,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -57,28 +58,32 @@ public class DodajPriznanicuController {
             }
 
             private void dodajPriznanicu(ActionEvent e) {
-                LocalDate datumIzdavanja = LocalDate.now();
-                Otkupljivac o = (Otkupljivac) dpf.getCmbOtkupljivaci().getSelectedItem();
-
-                priznanica.setDatumIzdavanja(datumIzdavanja);
-                priznanica.setOtkupljivac(o);
-
-                ModelTabeleStavkePriznanice mts = (ModelTabeleStavkePriznanice) dpf.getTblStavkePriznanice().getModel();
-                List<StavkaPriznanice> stavke = mts.getLista();
-                priznanica.setStavkePriznanice(stavke);
-                priznanica.setUkupnaVrednost(mts.vratiUkupnoVrednostStavki());
-
                 try {
+                    LocalDate datumIzdavanja = LocalDate.now();
+                    Otkupljivac o = (Otkupljivac) dpf.getCmbOtkupljivaci().getSelectedItem();
+                    Validator validator = Validator.startValidation()
+                            .validateNotNull(o, "Morate izabrati otkupljivača.")
+                            .validateNotNull(priznanica.getProizvodjac(), "Morate izabrati proizvođača.");
+                    validator.throwIfInvalide();
+
+                    priznanica.setDatumIzdavanja(datumIzdavanja);
+                    priznanica.setOtkupljivac(o);
+
+                    ModelTabeleStavkePriznanice mts = (ModelTabeleStavkePriznanice) dpf.getTblStavkePriznanice().getModel();
+                    List<StavkaPriznanice> stavke = mts.getLista();
+                    priznanica.setStavkePriznanice(stavke);
+                    priznanica.setUkupnaVrednost(mts.vratiUkupnoVrednostStavki());
+
                     JOptionPane.showMessageDialog(dpf, "Sistem je kreirao priznanicu.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         priznanica = Komunikacija.getInstance().dodajPriznanicu(priznanica);
                         JOptionPane.showMessageDialog(dpf, "Sistem je zapamtio priznanicu.\n" + priznanica.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         dpf.dispose();
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti priznanicu.", "Greška", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti priznanicu.\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (Exception exc) {
-                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da kreira priznanicu.", "Greška", JOptionPane.ERROR_MESSAGE);
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(dpf, "Sistem ne može da kreira priznanicu.\n" + ve.getMessage(), "Greška pri validaciji", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -117,32 +122,44 @@ public class DodajPriznanicuController {
         dpf.addBtnDodajStavkuActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String jedinicaMere = dpf.getTxtJM().getText().trim();
-                double kolicina = Double.parseDouble(dpf.getTxtKolicina().getText());
-                Sorta sorta = (Sorta) dpf.getCmbSorte().getSelectedItem();
-                double cena = 0;
-                switch (sorta.getKategorija()) {
-                    case 1:
-                        cena = sorta.getCena();
-                        break;
-                    case 2:
-                        cena = 0.75 * sorta.getCena();
-                        break;
-                    case 3:
-                        cena = 0.5 * sorta.getCena();
-                        break;
-                    default:
-                        throw new AssertionError();
+                try {
+                    String jedinicaMere = dpf.getTxtJM().getText().trim();
+                    String kolicinaStr = dpf.getTxtKolicina().getText();
+                    double kolicina = Double.parseDouble(kolicinaStr);
+                    Sorta sorta = (Sorta) dpf.getCmbSorte().getSelectedItem();
+                    double cena = 0;
+                    switch (sorta.getKategorija()) {
+                        case 1:
+                            cena = sorta.getCena();
+                            break;
+                        case 2:
+                            cena = 0.75 * sorta.getCena();
+                            break;
+                        case 3:
+                            cena = 0.5 * sorta.getCena();
+                            break;
+                        default:
+                            throw new AssertionError();
+                    }
+                    double vrednost = kolicina * cena;
+                    int rb = dpf.getTblStavkePriznanice().getRowCount() + 1;
+
+                    Validator.startValidation()
+                            .validateNotNull(jedinicaMere, "Jedinica mere nije uneta.")
+                            .validateNotNull(kolicinaStr, "Količina nije uneta.")
+                            .validateValueIsNumber(kolicinaStr, "Količina mora biti broj.")
+                            .validateNotNull(sorta, "Sorta nije izabrana.")
+                            .throwIfInvalide();
+
+                    StavkaPriznanice sp = new StavkaPriznanice(priznanica, rb, jedinicaMere, kolicina, cena, vrednost, sorta);
+
+                    ModelTabeleStavkePriznanice mts = (ModelTabeleStavkePriznanice) dpf.getTblStavkePriznanice().getModel();
+                    mts.dodajStavku(sp);
+                    mts.osveziTabelu();
+                    dpf.getTxtUkupnaVrednost().setText(mts.vratiUkupnoVrednostStavki() + " din");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(dpf, ex.getMessage(), "Greška u validaciji:" + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
                 }
-                double vrednost = kolicina * cena;
-                int rb = dpf.getTblStavkePriznanice().getRowCount() + 1; 
-                StavkaPriznanice sp = new StavkaPriznanice(priznanica, rb, jedinicaMere, kolicina, cena, vrednost, sorta);
-
-                ModelTabeleStavkePriznanice mts = (ModelTabeleStavkePriznanice) dpf.getTblStavkePriznanice().getModel();
-                mts.dodajStavku(sp);
-                mts.osveziTabelu();
-                dpf.getTxtUkupnaVrednost().setText(mts.vratiUkupnoVrednostStavki() + " din");
-
             }
         }
         );
@@ -169,8 +186,22 @@ public class DodajPriznanicuController {
         dpf.addBtnAzurirajPriznanicuActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int id = Integer.parseInt(dpf.getTxtIdPriznanice().getText().trim());
-                LocalDate datumIzdavanja = LocalDate.parse(dpf.getTxtDatumIzdavanja().getText());
+                try{
+                String idStr = dpf.getTxtIdPriznanice().getText().trim();
+                String datumStr = dpf.getTxtDatumIzdavanja().getText();
+                
+                int id = -1;
+                if (idStr != null && !dpf.getTxtIdPriznanice().getText().trim().isEmpty()) {
+                    Validator.startValidation().validateValueIsNumber(idStr, "ID mora biti broj!").throwIfInvalide();
+                    id = Integer.parseInt(dpf.getTxtIdPriznanice().getText().trim());
+                }
+                LocalDate datumIzdavanja = null;
+                if (datumStr != null && !dpf.getTxtDatumIzdavanja().getText().trim().isEmpty()) {
+                    Validator.startValidation().validateValueIsDate(datumStr, "yyyy-MM-dd", "Datum mora biti u formatu yyyy-MM-dd!").throwIfInvalide();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    datumIzdavanja = LocalDate.parse(dpf.getTxtDatumIzdavanja().getText().trim(), formatter);
+                }
+
                 Otkupljivac o = (Otkupljivac) dpf.getCmbOtkupljivaci().getSelectedItem();
                 Proizvodjac proizvodjac = priznanica.getProizvodjac();
                 System.out.println("proizvodjac:" + proizvodjac);
@@ -188,7 +219,9 @@ public class DodajPriznanicuController {
                     priznanica = Komunikacija.getInstance().azurirajPriznanicu(priznanica);
                     JOptionPane.showMessageDialog(dpf, "Sistem je zapamtio priznanicu.\n" + priznanica.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     dpf.dispose();
-                } catch (Exception ex) {
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(dpf, ve.getMessage(), "Greška pri validaciji", JOptionPane.ERROR_MESSAGE);
+                }} catch (Exception ex) {
                     JOptionPane.showMessageDialog(dpf, "Sistem ne može da zapamti priznanicu.", "Greška", JOptionPane.ERROR_MESSAGE);
                 }
             }

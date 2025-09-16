@@ -20,11 +20,11 @@ public abstract class ApstraktnaGenerickaOperacija {
         this.broker = new DbRepositoryGeneric();
     }
 
-    public final void izvrsi(Object objekat, String kljuc) throws Exception{
+    public final void izvrsi(Object objekat) throws Exception{
         try {
             preduslovi(objekat);
             zapocniTransakciju();
-            izvrsiOperaciju(objekat, kljuc);
+            izvrsiOperaciju(objekat);
             potvrdiTransakciju();
         } catch (Exception e) {
             ponistiTransakciju();
@@ -34,7 +34,7 @@ public abstract class ApstraktnaGenerickaOperacija {
 
     protected abstract void preduslovi(Object objekat) throws Exception;
 
-    protected abstract void izvrsiOperaciju(Object objekat, String kljuc) throws Exception;
+    protected abstract void izvrsiOperaciju(Object objekat) throws Exception;
 
     private void zapocniTransakciju() throws Exception {
         ((DbRepository) broker).connect();

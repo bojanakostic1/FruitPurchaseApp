@@ -26,30 +26,30 @@ import komunikacija.Zahtev;
  * @author Bojana
  */
 public class ObradaKlijentskihZahteva extends Thread {
-
+    
     Socket soket;
     Primalac primalac;
     Posiljalac posiljalac;
     boolean kraj = false;
-
+    
     public ObradaKlijentskihZahteva(Socket socket) {
         this.soket = socket;
         primalac = new Primalac(socket);
         posiljalac = new Posiljalac(socket);
     }
-
+    
     @Override
     public void run() {
         while (!kraj) {
             try {
                 Zahtev zahtev = (Zahtev) primalac.primi();
-
+                
                 if (zahtev == null) {
                     System.out.println("Klijent je prekinuo vezu.");
                     break; // Prekida nit ako klijent zatvori konekciju
                 }
                 Odgovor odgovor = new Odgovor();
-
+                
                 switch (zahtev.getOperacija()) {
                     case LOGIN:
                         Otkupljivac o = (Otkupljivac) zahtev.getParametar();
@@ -74,9 +74,13 @@ public class ObradaKlijentskihZahteva extends Thread {
                         odgovor.setOdgovor(mesta);
                         break;
                     case DODAJ_PROIZVODJACA:
-                        Proizvodjac proizvodjac = (Proizvodjac) zahtev.getParametar();
-                        Controller.getInstance().dodajProizvodjaca(proizvodjac);
-                        odgovor.setOdgovor(null);
+                        try {
+                            Proizvodjac proizvodjac = (Proizvodjac) zahtev.getParametar();
+                            Controller.getInstance().dodajProizvodjaca(proizvodjac);
+                            odgovor.setOdgovor(null);
+                        } catch (Exception ex) {
+                            odgovor.setOdgovor(ex);
+                        }
                         break;
                     case AZURIRAJ_PROIZVODJACA:
                         Proizvodjac p = (Proizvodjac) zahtev.getParametar();
@@ -171,7 +175,7 @@ public class ObradaKlijentskihZahteva extends Thread {
                         break;
                     case DODAJ_OTKUPLJIVACA:
                         Otkupljivac otkupljivac1 = (Otkupljivac) zahtev.getParametar();
-                         try {
+                        try {
                             Controller.getInstance().dodajOtkupljivaca(otkupljivac1);
                         } catch (Exception ex) {
                             odgovor.setOdgovor(ex);
@@ -179,8 +183,11 @@ public class ObradaKlijentskihZahteva extends Thread {
                         break;
                     case AZURIRAJ_OTKUPLJIVACA:
                         Otkupljivac otkupljivac2 = (Otkupljivac) zahtev.getParametar();
-                        Controller.getInstance().azurirajOtkupljivaca(otkupljivac2);
-                        odgovor.setOdgovor(null);
+                        try {
+                            Controller.getInstance().azurirajOtkupljivaca(otkupljivac2);
+                        } catch (Exception e){
+                            odgovor.setOdgovor(e);
+                        }
                         break;
                     case UCITAJ_PRIZNANICE:
                         List<Priznanica> priznanice = Controller.getInstance().ucitajPriznanice();
@@ -197,19 +204,19 @@ public class ObradaKlijentskihZahteva extends Thread {
                         break;
                     case DODAJ_PRIZNANICU:
                         try {
-                            Priznanica priznanica  = (Priznanica) zahtev.getParametar();
+                            Priznanica priznanica = (Priznanica) zahtev.getParametar();
                             Controller.getInstance().dodajPriznanicu(priznanica);
-                            System.out.println("priznanica okz:"+priznanica);
+                            System.out.println("priznanica okz:" + priznanica);
                             odgovor.setOdgovor(priznanica);
                         } catch (Exception ex) {
                             odgovor.setOdgovor(ex);
                         }
                         break;
-                        case AZURIRAJ_PRIZNANICU:
+                    case AZURIRAJ_PRIZNANICU:
                         try {
-                            Priznanica priznanica  = (Priznanica) zahtev.getParametar();
+                            Priznanica priznanica = (Priznanica) zahtev.getParametar();
                             Controller.getInstance().azurirajPriznanicu(priznanica);
-                            System.out.println("priznanica okz:"+priznanica);
+                            System.out.println("priznanica okz:" + priznanica);
                             odgovor.setOdgovor(priznanica);
                         } catch (Exception ex) {
                             odgovor.setOdgovor(ex);
@@ -225,7 +232,7 @@ public class ObradaKlijentskihZahteva extends Thread {
             }
         }
     }
-
+    
     public void prekiniNit() {
         kraj = true;
         try {
@@ -234,6 +241,6 @@ public class ObradaKlijentskihZahteva extends Thread {
             ex.printStackTrace();
         }
         interrupt();
-
+        
     }
 }

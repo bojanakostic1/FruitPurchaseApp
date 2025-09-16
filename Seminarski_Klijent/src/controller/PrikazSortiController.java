@@ -55,7 +55,7 @@ public class PrikazSortiController {
                     JOptionPane.showMessageDialog(psf, "Sistem je našao sortu. " + s, "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         Komunikacija.getInstance().obrisiSortu(s);
-                        JOptionPane.showMessageDialog(null, "Sistem je obrisao sortu.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(psf, "Sistem je obrisao sortu.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         pripremiFormu();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(psf, "Sistem ne može da obriše sortu.", "Greška", JOptionPane.ERROR_MESSAGE);

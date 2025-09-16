@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -63,9 +65,21 @@ public class DodajSortuController {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String naziv = dsf.getTxtNaziv().getText().trim();
-                    int kategorija = Integer.parseInt(dsf.getTxtKategorija().getText().trim());
-                    double cena = Double.parseDouble(dsf.getTxtCena().getText().trim());
-                    //Da li ovde dodati proveru kategorije i cene?
+                    String kategorijaStr = dsf.getTxtKategorija().getText().trim();
+                    String cenaStr = dsf.getTxtCena().getText().trim();
+
+                    Validator validator = Validator.startValidation()
+                            .validateNotNullOrEmpty(naziv, "Naziv je obavezan.")
+                            .validateOnlyLettersAndSpaces(naziv, "Naziv može sadržati samo slova.")
+                            .validateNotNullOrEmpty(kategorijaStr, "Kategorija je obavezna.")
+                            .validateValueIsNumber(kategorijaStr, "Kategorija mora biti broj.")
+                            .validateNotNullOrEmpty(cenaStr, "Cena je obavezna.")
+                            .validateValueIsNumber(cenaStr, "Cena mora biti broj.");
+
+                    validator.throwIfInvalide();
+
+                    int kategorija = Integer.parseInt(kategorijaStr);
+                    double cena = Double.parseDouble(cenaStr);
                     Sorta sorta = new Sorta(-1, naziv, kategorija, cena);
                     JOptionPane.showMessageDialog(dsf, "Sistem je kreirao sortu.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
@@ -73,10 +87,12 @@ public class DodajSortuController {
                         JOptionPane.showMessageDialog(dsf, "Sistem je zapamtio sortu. " + sorta, "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         dsf.dispose();
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(dsf, "Sistem ne može da zapamti sortu.", "Greška", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(dsf, "Sistem ne može da zapamti sortu.\n" + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(dsf, ex.getMessage(), "Greške pri validaciji", JOptionPane.ERROR_MESSAGE);
                     JOptionPane.showMessageDialog(dsf, "Sistem ne može da kreira sortu.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    dsf.dispose();
                 }
             }
         });
@@ -86,11 +102,28 @@ public class DodajSortuController {
             public void actionPerformed(ActionEvent e) {
                 int id = Integer.parseInt(dsf.getTxtId().getText());
                 String naziv = dsf.getTxtNaziv().getText().trim();
-                int kategorija = Integer.parseInt(dsf.getTxtKategorija().getText().trim());
-                double cena = Double.parseDouble(dsf.getTxtCena().getText().trim());
+                String kategorijaStr = dsf.getTxtKategorija().getText().trim();
+                String cenaStr = dsf.getTxtCena().getText().trim();
+
+                try {
+                    Validator.startValidation()
+                            .validateNotNullOrEmpty(naziv, "Naziv je obavezan.")
+                            .validateOnlyLettersAndSpaces(naziv, "Naziv može sadržati samo slova.")
+                            .validateNotNullOrEmpty(kategorijaStr, "Kategorija je obavezna.")
+                            .validateValueIsNumber(kategorijaStr, "Kategorija mora biti broj.")
+                            .validateNotNullOrEmpty(cenaStr, "Cena je obavezna.")
+                            .validateValueIsNumber(cenaStr, "Cena mora biti broj.")
+                            .throwIfInvalide();
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(dsf, ve.getMessage(), "Greške pri validaciji", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int kategorija = Integer.parseInt(kategorijaStr);
+                double cena = Double.parseDouble(cenaStr);
 
                 Sorta s = new Sorta(id, naziv, kategorija, cena);
-                
+
                 try {
                     Komunikacija.getInstance().azurirajSortu(s);
                     JOptionPane.showMessageDialog(dsf, "Sistem je zapamtio sortu.\n" + s.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);

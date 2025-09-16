@@ -15,10 +15,13 @@ import forme.model.ModelTabeleStavkePriznanice;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import kontroler.GlavniKontroler;
+import validator.ValidationException;
+import validator.Validator;
 
 /**
  *
@@ -27,7 +30,7 @@ import kontroler.GlavniKontroler;
 public class PrikazPriznanicaController {
 
     private final PrikazPriznanicaForma ppf;
-  
+
     public PrikazPriznanicaController(PrikazPriznanicaForma ppf) {
         this.ppf = ppf;
         addActionListener();
@@ -63,7 +66,7 @@ public class PrikazPriznanicaController {
                 } else {
                     ModelTabelePriznanice mtp = (ModelTabelePriznanice) ppf.getTblPriznanice().getModel();
                     Priznanica p = mtp.getLista().get(red);
-                    JOptionPane.showMessageDialog(null, "Sistem je našao priznanicu.\n" + p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(ppf, "Sistem je našao priznanicu.\n" + p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     List<StavkaPriznanice> lista = p.getStavkePriznanice();
                     ModelTabeleStavkePriznanice mts = new ModelTabeleStavkePriznanice(lista);
                     ppf.getTblStavkePriznanice().setModel(mts);
@@ -85,7 +88,7 @@ public class PrikazPriznanicaController {
                     JOptionPane.showMessageDialog(ppf, "Sistem je našao priznanicu.\n" + p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         Komunikacija.getInstance().obrisiPriznanicu(p);
-                        JOptionPane.showMessageDialog(null, "Sistem je obrisao priznanicu.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(ppf, "Sistem je obrisao priznanicu.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                         pripremiFormu();
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(ppf, "Sistem ne može da obriše priznanicu.", "Greška", JOptionPane.ERROR_MESSAGE);
@@ -98,25 +101,39 @@ public class PrikazPriznanicaController {
         ppf.addBtnPretraziActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int id = -1;
-                if (!ppf.getTxtId().getText().trim().isEmpty()) {
-                    id = Integer.parseInt(ppf.getTxtId().getText().trim());
-                }
-                LocalDate datum = null;
-                if (!ppf.getTxtDatum().getText().trim().isEmpty()) {
-                    datum = LocalDate.parse(ppf.getTxtDatum().getText().trim());
-                }
-                Otkupljivac otkupljivac = (Otkupljivac) ppf.getCmbOtkupljivaci().getSelectedItem();
-                Proizvodjac proizvodjac = (Proizvodjac) ppf.getCmbProizvodjaci().getSelectedItem();
-                Sorta sorta = (Sorta) ppf.getCmbSorte().getSelectedItem();
+                String idStr = ppf.getTxtId().getText().trim();
+                String datumStr = ppf.getTxtDatum().getText().trim();
+                try {
+                    int id = -1;
+                    if (idStr != null && !ppf.getTxtId().getText().trim().isEmpty()) {
+                        Validator.startValidation().validateValueIsNumber(idStr, "ID mora biti broj!").throwIfInvalide();
+                        id = Integer.parseInt(ppf.getTxtId().getText().trim());
+                    }
+                    LocalDate datum = null;
+                    if (datumStr != null && !ppf.getTxtDatum().getText().trim().isEmpty()) {
+                        Validator.startValidation().validateValueIsDate(datumStr, "yyyy-MM-dd", "Datum mora biti u formatu yyyy-MM-dd!").throwIfInvalide();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        datum = LocalDate.parse(ppf.getTxtDatum().getText().trim(), formatter);
 
-                ModelTabelePriznanice mtp = (ModelTabelePriznanice) ppf.getTblPriznanice().getModel();
-                int brojRezultata = mtp.pretrazi(id, datum, otkupljivac, proizvodjac, sorta);
-                if (brojRezultata == 0) {
-                    JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe priznanice po zadatim kriterijumima.", "Greška", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(ppf, "Sistem je našao priznanice po zadatim kriterijumima.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                    }
+
+                    Otkupljivac otkupljivac = (Otkupljivac) ppf.getCmbOtkupljivaci().getSelectedItem();
+                    Proizvodjac proizvodjac = (Proizvodjac) ppf.getCmbProizvodjaci().getSelectedItem();
+                    Sorta sorta = (Sorta) ppf.getCmbSorte().getSelectedItem();
+
+                    ModelTabelePriznanice mtp = (ModelTabelePriznanice) ppf.getTblPriznanice().getModel();
+                    int brojRezultata = mtp.pretrazi(id, datum, otkupljivac, proizvodjac, sorta);
+                    if (brojRezultata == 0) {
+                        JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe priznanice po zadatim kriterijumima.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(ppf, "Sistem je našao priznanice po zadatim kriterijumima.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (ValidationException ve) {
+                    JOptionPane.showMessageDialog(ppf, ve.getMessage(), "Greška pri validaciji", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(ppf, ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
                 }
+
             }
         });
 
@@ -126,7 +143,7 @@ public class PrikazPriznanicaController {
                 pripremiFormu();
             }
         });
-        
+
         ppf.addBtnAzurirajActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -134,9 +151,9 @@ public class PrikazPriznanicaController {
                 if (red == -1) {
                     JOptionPane.showMessageDialog(ppf, "Sistem ne može da nađe priznanicu.", "Greška", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(ppf, "Sistem je našao priznanicu.", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     ModelTabelePriznanice mtp = (ModelTabelePriznanice) ppf.getTblPriznanice().getModel();
                     Priznanica p = mtp.getLista().get(red);
+                    JOptionPane.showMessageDialog(ppf, "Sistem je našao priznanicu.\n" + p.toString(), "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
                     GlavniKontroler.getInstance().dodajParametar("priznanica", p);
                     GlavniKontroler.getInstance().otvoriIzmeniPriznanicuFormu();
                     osveziFormu();
